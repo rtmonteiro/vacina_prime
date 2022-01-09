@@ -1,0 +1,27 @@
+[
+  {
+    "id": "12571249",
+    "hospital": "hospital-santa-paula",
+    "coordinates": {
+      "x": "-20.2559763",
+      "y": "-40.2704349"
+    },
+    "vaccines": [
+      {
+        "brand": "Jansen",
+        "volume": "1",
+        "maxTemperature": 25,
+        "minTemperature": 9,
+        "maxDuration": 12
+      }
+    ]
+  },
+  {
+    "id": "13",
+    "hospital": "hospital-santa-paula",
+    "coordinates": {
+      "x": "-20.2559763",
+      "y": "-40.2704349"
+    }
+  }
+]

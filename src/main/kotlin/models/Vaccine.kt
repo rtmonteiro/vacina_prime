@@ -1,9 +1,17 @@
 package models
 
-class Vaccine(marca: String) {
-    var marca: String? = null
-    var lote: String? = null
-    var quantidade: Int = 0
-    var temperaturaMax: Double = 0.0
-    var temperaturaMin: Double = 0.0
+import kotlinx.serialization.Serializable
+
+@Serializable
+class Vaccine {
+    constructor(brand: String, volume: String, maxTemperature: Int, MinTemperature: Double, maxDuration: Double)
+
+    private var brand: String? = null
+    private var volume: String? = null
+    private var maxTemperature: Int = 0
+    private var minTemperature: Double = 0.0
+    private var maxDuration: Double = 0.0
+
+
+
 }
