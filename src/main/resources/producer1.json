@@ -15,13 +15,5 @@
         "maxDuration": 12
       }
     ]
-  },
-  {
-    "id": "13",
-    "hospital": "hospital-santa-paula",
-    "coordinates": {
-      "x": "-20.2559763",
-      "y": "-40.2704349"
-    }
   }
 ]

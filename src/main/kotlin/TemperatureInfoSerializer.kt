@@ -1,13 +1,17 @@
-package com.ufes.patricia.twitter
+//package temperature
 //
-//import com.fasterxml.jackson.databind.ObjectMapper
-//import models.Temperature
-//import org.apache.kafka.common.errors.SerializationException
+//import models.TemperatureInfo
 //import org.apache.kafka.common.serialization.Serializer
-//import java.nio.charset.StandardCharsets
 //
-//class TemperatureSerializer: Serializer<Temperature?> {
-//    private val objectMapper: ObjectMapper = ObjectMapper()
+////
+////import models.Temperature
+////import org.apache.kafka.common.errors.SerializationException
+////import org.apache.kafka.common.serialization.Serializer
+////import java.nio.charset.StandardCharsets
+////
+//class TemperatureInfoSerializer: Serializer<TemperatureInfo?> {
+//    private val objectMapper = ObjectMapper().apply
+//
 //    override fun configure(configs: Map<*, *>?, isKey: Boolean) {
 //        //Serializer.super.configure(configs, isKey);
 //    }
@@ -29,4 +33,4 @@ package com.ufes.patricia.twitter
 //    override fun close() {
 //        //  Serializer.super.close();
 //    }
-////}
+//}

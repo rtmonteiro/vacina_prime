@@ -1,56 +1,48 @@
 package temperature
 
-import kotlinx.serialization.decodeFromString
+import TopicCreator
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import models.TemperatureInfo
 import models.TemperatureProducerInfo
-import org.apache.kafka.clients.admin.Admin
 import org.apache.kafka.clients.admin.AdminClient
-import org.apache.kafka.clients.admin.CreatePartitionsOptions
-import org.apache.kafka.clients.admin.NewPartitions
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.common.errors.TopicExistsException
-import org.apache.kafka.common.requests.DeleteAclsResponse.log
 import org.apache.kafka.common.serialization.StringSerializer
 import java.util.*
-import kotlin.collections.HashMap
 import kotlin.random.Random
 
 
-class VaccineProducer(producerInfo: TemperatureProducerInfo) {
+class VaccineProducer(producerInfo: TemperatureProducerInfo): Runnable {
 
-    var producerInfo: TemperatureProducerInfo? = null
-    var admin: AdminClient? = null
+    var producerInfo: TemperatureProducerInfo? = producerInfo
+    var topicCreator = TopicCreator()
 
-    fun main(args: Array<String>) {
+    public override fun run() {
 
-
-//        readJsonInfo()
+        topicCreator.deleteTopic("hospital-santa-paula")
         //cria produtor com as devidas propriedades (SerDes customizado)
         var producer: KafkaProducer<String, String> = createProducer();
-
-        //shutdown hook
 
         //shutdown hook
         Runtime.getRuntime().addShutdownHook(Thread {
             println("fechando aplicação... ")
             producer.close()
         })
-        var temp: Double = 0.0
+        var temp = 0.0
         while(true) {
 
 //            var temperature: Temperature = Temperature(Random.nextDouble())
             temp = Random.nextDouble()
-            println(temp)
-
             if (producerInfo == null) { return }
-            println(producer.partitionsFor(producerInfo!!.hospital).toString())
-            val record = ProducerRecord<String, String>(producerInfo!!.hospital, producerInfo!!.id.toInt(),"temperature", temp.toString())
-
+            val temperature = TemperatureInfo(temp, this.producerInfo!!)
+            val data = Json.encodeToString(temperature)
+            val record = ProducerRecord<String, String>(producerInfo!!.hospital,producerInfo!!.id, data)
             //enviar Temperatura serializada para Kafka
             producer.send(record) { recordMetadata, e -> //executes a record if success or exception is thrown
                 if (e == null) {
+                    println("Producer: " + producerInfo!!.id)
                     println(
                         """Metadados recebidos
                          Topic ${recordMetadata.topic()}
@@ -69,18 +61,9 @@ class VaccineProducer(producerInfo: TemperatureProducerInfo) {
             Thread.sleep(1000);
         }
 
-    }
 
-//    fun readJsonInfo() {
-//        val filename = "producer1.json"
-//        val fileContent = this.javaClass.classLoader.getResource(filename)?.readText()
-//
-//        if (fileContent != null) {
-//            val json = Json.decodeFromString<List<TemperatureProducerInfo>>(fileContent)
-//            println(json.id)
-//            this.producerInfo = json
-//        }
-//    }
+
+    }
 
     //iniciar produtor Kafka
     private fun createProducer(): KafkaProducer<String, String> {
@@ -91,11 +74,13 @@ class VaccineProducer(producerInfo: TemperatureProducerInfo) {
         prop.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
         prop.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
 
-        admin = AdminClient.create(prop)
-        val options = CreatePartitionsOptions()
-        var partitions = HashMap<String, NewPartitions>()
-        partitions[producerInfo!!.hospital] = NewPartitions.increaseTo(1)
-        admin!!.createPartitions(partitions)
+        val topicName: String = producerInfo!!.hospital
+        topicCreator.createTopic(topicName, 10)
+//        admin = AdminClient.create(prop)
+//        val options = CreatePartitionsOptions()
+//        var partitions = HashMap<String, NewPartitions>()
+//        partitions[producerInfo!!.hospital] = NewPartitions.increaseTo(1)
+//        admin!!.createPartitions(partitions)
         return KafkaProducer<String, String>(prop)
     }
 
