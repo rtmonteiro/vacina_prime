@@ -1,3 +1,5 @@
+package utils
+
 import org.apache.kafka.clients.admin.AdminClient
 import org.apache.kafka.clients.admin.AdminClientConfig
 import org.apache.kafka.clients.admin.NewTopic
@@ -10,8 +12,6 @@ import java.util.stream.Collectors
 class TopicCreator {
 
     fun main(args: Array<String>) {
-        createTopic("example-topic-1", 1)
-        createTopic("example-topic-2", 2)
     }
 
     @Throws(Exception::class)
