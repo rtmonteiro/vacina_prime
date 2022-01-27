@@ -35,12 +35,10 @@ object VaccineProducer : Runnable {
         } catch (err: Error) {
             println(err.localizedMessage)
         }
-
         run();
     }
 
     public override fun run() {
-
         topicCreator.deleteTopic("hospital-santa-paula")
         //cria produtor com as devidas propriedades (SerDes customizado)
         var producer: KafkaProducer<String, String> = createProducer();

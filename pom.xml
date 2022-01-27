@@ -105,6 +105,12 @@
             <version>1.7.32</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio</artifactId>
+            <version>8.25.0</version>
+        </dependency>
+
     </dependencies>
 
 </project>

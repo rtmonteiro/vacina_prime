@@ -1,5 +1,6 @@
 package consumers
 
+import com.twilio.Twilio
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import models.*
@@ -10,16 +11,21 @@ import org.apache.kafka.common.serialization.StringDeserializer
 import producers.ManagerProducer
 import producers.VaccineProducer
 import producers.VaccineProducer.jsonReader
-import java.lang.Math.abs
+import utils.TwilioApi
+import java.lang.Math.*
 import java.time.Duration
 import java.util.*
-import kotlin.collections.HashMap
+import kotlin.math.sqrt
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.atan2
 
 
 object VaccineConsumer: Runnable {
     var consumerInfo: TemperatureConsumerInfo? = null
     var knownFreezersMap: HashMap<String, TemperatureProducerInfo> = hashMapOf()
     var knownManagers: HashMap<String, ManagerInfo> = hashMapOf()
+    val twilioApi = TwilioApi()
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -81,6 +87,7 @@ object VaccineConsumer: Runnable {
                         val timeDifference = now - vaccine.lastTimeOutOfBounds
                         if (timeDifference >= vaccine.maxDuration * 1000 * 3600) {
                             // Descarte
+                            twilioApi.sendMessage("+5527999405527", "Descarte a vacina")
                             println("Descarte a vacina!")
                         } else {
                             // Avisar gestor mais próximo
@@ -88,6 +95,7 @@ object VaccineConsumer: Runnable {
                             if(nearestManager == null) {
                                 println("Não existe um Manager próximo conhecido!")
                             } else {
+                                twilioApi.sendMessage(nearestManager.phone, "Meu amigo(a) ${nearestManager.name}, a vacina ta dando ruim lá ")
                                 println("Avisando manager mais proximo(${nearestManager.name}) no telefone ${nearestManager.phone}")
                             }
                         }
@@ -120,19 +128,41 @@ object VaccineConsumer: Runnable {
 
     private fun getNearestManager(coordinate: Coordinate): ManagerInfo? {
         var nearestManager: ManagerInfo? = null
+        var nearestDistance: Double = 0.0
         knownManagers.forEach { manager ->
             if (nearestManager == null) {
                 nearestManager = manager.value
+                nearestDistance = nearestManager!!.coordinate?.let { calculateDistance(coordinate, it) }!!
             } else {
-                val actualLatDiff = abs(coordinate.lat - nearestManager!!.coordinate?.lat!!)
-                val newLatDiff = abs(coordinate.lat - manager.value.coordinate!!.lat)
+                // Corrigir para distancia entre dois pontos
+                val distance = nearestManager!!.coordinate?.let { calculateDistance(coordinate, it) }
 
-                if (newLatDiff < actualLatDiff) {
-                    nearestManager = manager.value
+                if (distance != null) {
+                    if (distance < nearestDistance) {
+                        nearestManager = manager.value
+                    }
                 }
             }
         }
 
         return nearestManager
+    }
+
+    private fun calculateDistance(coordinate1: Coordinate, coordinate2: Coordinate): Double {
+        val earthRadius = 6371e3 //raio da terra em metros
+
+        val sigma1: Double = coordinate1.lat * Math.PI / 180 // φ, λ in radians
+
+        val sigma2: Double = coordinate2.lat * Math.PI / 180
+        val deltaSigma: Double = (coordinate2.lat - coordinate1.lat) * Math.PI / 180
+        val deltaLambda: Double = (coordinate2.lon - coordinate1.lon) * Math.PI / 180
+
+        val a =sin(deltaSigma / 2) *sin(deltaSigma / 2) +
+               cos(sigma1) * cos(sigma2) *
+               sin(deltaLambda / 2) *sin(deltaLambda / 2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        return earthRadius * c
+
     }
 }
