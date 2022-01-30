@@ -1,0 +1,23 @@
+[
+  {
+    "brand": "Jansen",
+    "volume": "1",
+    "maxTemperature": 25,
+    "minTemperature": 9,
+    "maxDuration": 12
+  },
+  {
+    "brand": "Jansen",
+    "volume": "2",
+    "maxTemperature": 25,
+    "minTemperature": 9,
+    "maxDuration": 12
+  },
+  {
+    "brand": "Jansen",
+    "volume": "3",
+    "maxTemperature": 25,
+    "minTemperature": 9,
+    "maxDuration": 12
+  }
+]
