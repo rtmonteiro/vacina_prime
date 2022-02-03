@@ -1,5 +1,6 @@
 package br.lenkeryan.kafka.consumers
 
+import br.lenkeryan.kafka.database.DatabaseHandler
 import br.lenkeryan.kafka.models.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -11,6 +12,9 @@ import br.lenkeryan.kafka.producers.ManagerProducer
 import br.lenkeryan.kafka.producers.VaccineProducer
 import br.lenkeryan.kafka.producers.VaccineProducer.jsonReader
 import br.lenkeryan.kafka.utils.TwilioApi
+import com.j256.ormlite.dao.Dao
+import com.j256.ormlite.dao.DaoManager
+import models.Account
 import java.time.Duration
 import java.util.*
 import kotlin.math.sqrt
@@ -24,6 +28,7 @@ object VaccineConsumer: Runnable {
     var knownFreezersMap: HashMap<String, TemperatureProducerInfo> = hashMapOf()
     var knownManagers: HashMap<String, ManagerInfo> = hashMapOf()
     private val twilioApi = TwilioApi()
+    val db = DatabaseHandler();
 
     @JvmStatic
     fun main(args: Array<String>) {
