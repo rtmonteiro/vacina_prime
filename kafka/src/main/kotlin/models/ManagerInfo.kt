@@ -3,28 +3,36 @@ package br.lenkeryan.kafka.models
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 import kotlinx.serialization.Serializable
+import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.IntIdTable
+import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.Table
 
-@DatabaseTable(tableName = "managers")
 @Serializable
-data class ManagerInfo(
+@DatabaseTable(tableName = "managers")
+class ManagerInfo{
     @DatabaseField(id = true)
-    val id: String,
+    lateinit var id: String
 
     @DatabaseField()
-    val name: String,
+    lateinit var name: String
 
     @DatabaseField()
-    val phone: String,
+    lateinit var phone: String
 
     @DatabaseField()
-    val email: String
-) {
+    lateinit var email: String
+
+    fun ManagerInfo() {} // Required for ORMlite
+
+    fun ManagerInfo(id: String, name: String, phone: String, email: String) {
+        this.id = id
+        this.name = name
+        this.phone = phone
+        this.email = email
+    }
+
     var coordinate: Coordinate? = null
 
-    constructor(id: String, name: String, phone: String, email: String, coordinate: Coordinate) : this(
-        id, name, phone, email
-    ) {
-
-        this.coordinate = coordinate
-    }
 }
+

@@ -15,7 +15,7 @@ class JsonReader {
         return Json.decodeFromString(fileContent)
     }
 
-    fun readConsumerJsonInfo(filename: String) : List<TemperatureConsumerInfo>{
+    fun readConsumerJsonInfo(filename: String) : TemperatureConsumerInfo {
         val fileContent = File(filename).readText()
 
         return Json.decodeFromString(fileContent)

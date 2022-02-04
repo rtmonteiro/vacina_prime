@@ -3,7 +3,9 @@ package models
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 import database.AccountDao
+import kotlinx.serialization.Serializable
 
+@Serializable
 @DatabaseTable(tableName = "accounts")
 class Account {
     @DatabaseField(id = true)

@@ -1,5 +1,6 @@
 package br.lenkeryan.kafka.producers
 
+import br.lenkeryan.kafka.database.DatabaseHandler
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import br.lenkeryan.kafka.models.Coordinate
@@ -12,34 +13,21 @@ import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.StringSerializer
 import br.lenkeryan.kafka.utils.JsonReader
 import br.lenkeryan.kafka.utils.TopicCreator
+import models.ManagerCoordinates
+import utils.Constants
 import java.lang.Error
 import java.util.*
 import kotlin.random.Random
 
-object ManagerProducer: Runnable {
-    private var managerInfo: ManagerInfo? = null
+class ManagerProducer(managerInfo: ManagerInfo?): Runnable {
+    var managerInfo: ManagerInfo? = managerInfo
     private var topicCreator = TopicCreator()
     private var jsonReader = JsonReader()
     private val sleepingTime = 10.0 // Time in seconds
-    const val managersTopic = "managers-coordinates"
-    const val managersKey = "manager"
-
-    @JvmStatic
-    fun main(args: Array<String>) {
-        try {
-            val filename = args[0]
-            var data = jsonReader.readManagerJsonInfo(filename)
-            managerInfo = data[0]
-        } catch (err: Error) {
-            println(err.localizedMessage)
-        }
-
-        run();
-    }
+    val managersTopic = Constants.managersTopic
 
     public override fun run() {
 
-        topicCreator.deleteTopic(managersTopic)
         //cria produtor com as devidas propriedades (SerDes customizado)
         var producer: KafkaProducer<String, String> = createProducer();
 
@@ -56,7 +44,7 @@ object ManagerProducer: Runnable {
 
             val info = getManagerCoordinates()
             val data = Json.encodeToString(info)
-            val record = ProducerRecord<String, String>(managersTopic, managersKey, data)
+            val record = ProducerRecord<String, String>(managersTopic, managerInfo!!.id, data)
             //enviar Temperatura serializada para Kafka
             producer.send(record) { recordMetadata, e -> //executes a record if success or exception is thrown
                 if (e == null) {
@@ -90,12 +78,12 @@ object ManagerProducer: Runnable {
         return KafkaProducer<String, String>(prop)
     }
 
-    private fun getManagerCoordinates(): ManagerInfo {
+    private fun getManagerCoordinates(): ManagerCoordinates {
         val latitude = Random.nextDouble(-90.0, 90.0)
         val longitude = Random.nextDouble(-180.0, 180.0)
-        val coord = Coordinate(latitude, longitude)
-        val info = managerInfo!!
-        info.coordinate = coord
-        return info
+        val managerCoord = ManagerCoordinates(latitude, longitude, managerInfo!!)
+        DatabaseHandler.managerCoordinatesDao.create(managerCoord)
+        return managerCoord
     }
+
 }

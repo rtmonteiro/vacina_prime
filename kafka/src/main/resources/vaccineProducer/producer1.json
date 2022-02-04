@@ -1,0 +1,14 @@
+{
+  "id": "12571249",
+  "hospital": "hospital-santa-paula",
+  "vaccines": [
+    {
+      "brand": "Jansen",
+      "volume": "1",
+      "maxTemperature": 25,
+      "minTemperature": 9,
+      "maxDuration": 12
+    }
+  ]
+}
+

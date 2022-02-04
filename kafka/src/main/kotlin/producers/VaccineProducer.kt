@@ -15,28 +15,27 @@ import java.lang.Error
 import java.util.*
 import kotlin.random.Random
 
-object VaccineProducer : Runnable {
+class VaccineProducer(producerInfo: TemperatureProducerInfo) : Runnable {
 
-    var producerInfo: TemperatureProducerInfo? = null
+    var producerInfo: TemperatureProducerInfo? = producerInfo
     var topicCreator = TopicCreator()
     var jsonReader = JsonReader()
     private val sleepingTime = 2.0 // Time in seconds
-    const val vaccineProducerKey = "freezer"
 
-    @JvmStatic
-    fun main(args: Array<String>) {
-        try {
-            val filename = args[0]
-            if (filename == null) {
-                println("Por favor informe o nome do arquivo")
-            }
-            var data = jsonReader.readProducerJsonInfo(filename)
-            producerInfo = data[0]
-        } catch (err: Error) {
-            println(err.localizedMessage)
-        }
-        run();
-    }
+//    @JvmStatic
+//    fun main(args: Array<String>) {
+//        try {
+//            val filename = args[0]
+//            if (filename == null) {
+//                println("Por favor informe o nome do arquivo")
+//            }
+//            var data = jsonReader.readProducerJsonInfo(filename)
+//            producerInfo = data[0]
+//        } catch (err: Error) {
+//            println(err.localizedMessage)
+//        }
+//        run();
+//    }
 
     public override fun run() {
         topicCreator.deleteTopic("hospital-santa-paula")
@@ -50,12 +49,12 @@ object VaccineProducer : Runnable {
         })
         while (true) {
 //            var temperature: Temperature = Temperature(Random.nextDouble())
-            if (producerInfo == null) {
+            if (producerInfo == null ) {
                 return
             }
             val temperature = getTemperatureInfo()
             val data = Json.encodeToString(temperature)
-            val record = ProducerRecord<String, String>(producerInfo!!.hospital, vaccineProducerKey, data)
+            val record = ProducerRecord(producerInfo!!.hospital, producerInfo!!.id, data)
             //enviar Temperatura serializada para Kafka
             producer.send(record) { recordMetadata, e -> //executes a record if success or exception is thrown
                 if (e == null) {
@@ -95,7 +94,7 @@ object VaccineProducer : Runnable {
         val longitude = Random.nextDouble(-180.0, 180.0)
         val coord = Coordinate(latitude, longitude)
         val temp = Random.nextDouble() * 100
-        return  TemperatureInfo(temp, producerInfo!!, coord )
+        return  TemperatureInfo(temp, producerInfo!!, coord)
     }
 
 }
