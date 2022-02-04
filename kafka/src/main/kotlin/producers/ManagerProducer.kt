@@ -19,12 +19,25 @@ import java.lang.Error
 import java.util.*
 import kotlin.random.Random
 
-class ManagerProducer(managerInfo: ManagerInfo?): Runnable {
-    var managerInfo: ManagerInfo? = managerInfo
+object ManagerProducer: Runnable {
+    var managerInfo: ManagerInfo? = null
     private var topicCreator = TopicCreator()
     private var jsonReader = JsonReader()
     private val sleepingTime = 10.0 // Time in seconds
     val managersTopic = Constants.managersTopic
+
+    @JvmStatic
+    fun main(args: Array<String>) {
+        try {
+            val filename = args[0]
+            var data = jsonReader.readManagerJsonInfo(filename)
+            managerInfo = data
+        } catch (err: Error) {
+            println(err.localizedMessage)
+        }
+        run();
+
+    }
 
     public override fun run() {
 

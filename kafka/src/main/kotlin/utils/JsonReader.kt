@@ -9,7 +9,7 @@ import java.io.File
 
 class JsonReader {
 
-    fun readProducerJsonInfo(filename: String) : List<TemperatureProducerInfo>{
+    fun readProducerJsonInfo(filename: String) : TemperatureProducerInfo{
         val fileContent = File(filename).readText()
 
         return Json.decodeFromString(fileContent)
@@ -21,7 +21,7 @@ class JsonReader {
         return Json.decodeFromString(fileContent)
     }
 
-    fun readManagerJsonInfo(filename: String) : List<ManagerInfo>{
+    fun readManagerJsonInfo(filename: String) : ManagerInfo {
         val fileContent = File(filename).readText()
 
         return Json.decodeFromString(fileContent)

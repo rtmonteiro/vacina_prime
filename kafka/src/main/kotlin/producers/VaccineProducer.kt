@@ -15,27 +15,27 @@ import java.lang.Error
 import java.util.*
 import kotlin.random.Random
 
-class VaccineProducer(producerInfo: TemperatureProducerInfo) : Runnable {
+object VaccineProducer : Runnable {
 
-    var producerInfo: TemperatureProducerInfo? = producerInfo
+    var producerInfo: TemperatureProducerInfo? = null
     var topicCreator = TopicCreator()
     var jsonReader = JsonReader()
     private val sleepingTime = 2.0 // Time in seconds
 
-//    @JvmStatic
-//    fun main(args: Array<String>) {
-//        try {
-//            val filename = args[0]
-//            if (filename == null) {
-//                println("Por favor informe o nome do arquivo")
-//            }
-//            var data = jsonReader.readProducerJsonInfo(filename)
-//            producerInfo = data[0]
-//        } catch (err: Error) {
-//            println(err.localizedMessage)
-//        }
-//        run();
-//    }
+    @JvmStatic
+    fun main(args: Array<String>) {
+        try {
+            val filename = args[0]
+            if (filename == null) {
+                println("Por favor informe o nome do arquivo")
+            }
+            var data = jsonReader.readProducerJsonInfo(filename)
+            producerInfo = data
+        } catch (err: Error) {
+            println(err.localizedMessage)
+        }
+        run();
+    }
 
     public override fun run() {
         topicCreator.deleteTopic("hospital-santa-paula")

@@ -60,12 +60,12 @@ object ManagerConsumer: Runnable {
 
     private fun analyseManagerInfo(record: ConsumerRecord<String, String>) {
         val info: ManagerCoordinates = Json.decodeFromString(record.value())
-        val managerExists = managers.contains(info.id)
-        if(!managerExists) {
+        val managerExists = managers.containsKey(record.key())
+        if(managerExists == false) {
             println("Novo manager com nome ${info.manager!!.name} registrado no consumidor.")
-            managers[info.id!!.toString()] = info.manager!!
+            managers[record.key()] = info.manager!!
         } else {
-            val actualManager = managers[info.id.toString()]
+            val actualManager = managers[record.key()]
             if (actualManager != null) {
                 actualManager.coordinate =
                     info.lat?.let { info.lon?.let { it1 -> Coordinate(it, it1) } } // Atualizando a coordenada do manager

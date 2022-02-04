@@ -17,23 +17,23 @@ import java.util.*
 
 
 
-class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
-    var consumerInfo: TemperatureConsumerInfo? = consumerInfo
+object VaccineConsumer: Runnable {
+    var consumerInfo: TemperatureConsumerInfo? = null
     private val twilioApi = TwilioApi()
     val jsonReader = JsonReader()
 
-//    @JvmStatic
-//    fun main(args: Array<String>) {
-//        try {
-//            val filename = args[0]
-//            var data = jsonReader.readConsumerJsonInfo(filename)
-//            consumerInfo = data
-//        } catch (err: Error) {
-//            println(err.localizedMessage)
-//        }
-//        run();
-//
-//    }
+    @JvmStatic
+    fun main(args: Array<String>) {
+        try {
+            val filename = args[0]
+            var data = jsonReader.readConsumerJsonInfo(filename)
+            consumerInfo = data
+        } catch (err: Error) {
+            println(err.localizedMessage)
+        }
+        run();
+
+    }
 
     public override fun run() {
         val BootstrapServer = "localhost:9092"
@@ -81,7 +81,7 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
                         val timeDifference = now - vaccine.lastTimeOutOfBounds
                         if (timeDifference >= vaccine.maxDuration * 1000 * 3600) {
                             // Descarte
-                            twilioApi.sendMessage("+5527999405527", "Descarte a vacina")
+//                            twilioApi.sendMessage("+5527999405527", "Descarte a vacina")
                             println("Descarte a vacina!")
                         } else {
                             // Avisar gestor mais próximo
@@ -89,7 +89,7 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
                             if(nearestManager == null) {
                                 println("Não existe um Manager próximo conhecido!")
                             } else {
-                                twilioApi.sendMessage(nearestManager.phone, "Meu amigo(a) ${nearestManager.name}, a vacina ta dando ruim lá")
+//                                twilioApi.sendMessage(nearestManager.phone, "Meu amigo(a) ${nearestManager.name}, a vacina ta dando ruim lá")
                                 println("Avisando manager mais proximo(${nearestManager.name}) no telefone ${nearestManager.phone}")
                             }
                         }
