@@ -12,9 +12,14 @@ import br.lenkeryan.kafka.utils.JsonReader
 import br.lenkeryan.kafka.utils.TwilioApi
 import consumers.ManagerConsumer
 import models.ProgramData.knownFreezersMap
+import org.apache.kafka.common.serialization.Serdes
 import java.time.Duration
 import java.util.*
-
+import org.apache.kafka.streams.*
+import org.apache.kafka.streams.kstream.Consumed
+import org.apache.kafka.streams.kstream.JoinWindows
+import org.apache.kafka.streams.kstream.KStream
+import org.slf4j.LoggerFactory
 
 
 object VaccineConsumer: Runnable {
@@ -39,21 +44,20 @@ object VaccineConsumer: Runnable {
         val BootstrapServer = "localhost:9092"
         val Topic = consumerInfo!!.hospital
         val prop = Properties()
-
         prop.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BootstrapServer)
         prop.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer::class.java.name)
         prop.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer::class.java.name)
         prop.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
         prop.setProperty(ConsumerConfig.GROUP_ID_CONFIG, consumerInfo!!.hospital )
 
+
         // Criar um Consumidor
         val consumer = KafkaConsumer<String, String>(prop)
         consumer.subscribe(listOf(Topic))
         while (true) {
+
             val records = consumer.poll(Duration.ofMillis(100))
             for (record in records) {
-                val freezerId = record.key()
-                println("FreezerID: $freezerId")
                 analyseTemperatureInfo(record)
             }
         }
