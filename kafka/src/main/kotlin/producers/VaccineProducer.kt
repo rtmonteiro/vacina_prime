@@ -1,6 +1,6 @@
 package br.lenkeryan.kafka.producers
 
-import br.lenkeryan.kafka.utils.TopicCreator
+import br.lenkeryan.kafka.utils.TopicManager
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import br.lenkeryan.kafka.models.Coordinate
@@ -19,9 +19,9 @@ import kotlin.random.Random
 object VaccineProducer : Runnable {
 
     var producerInfo: TemperatureProducerInfo? = null
-    var topicCreator = TopicCreator()
+    var topicCreator = TopicManager()
     var jsonReader = JsonReader()
-    private val sleepingTime = 2.0 // Time in seconds
+    private val sleepingTime = 7.0 // Time in seconds
 
     @JvmStatic
     fun main(args: Array<String>) {

@@ -1,18 +1,14 @@
 package br.lenkeryan.kafka.producers
 
-import br.lenkeryan.kafka.database.DatabaseHandler
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import br.lenkeryan.kafka.models.Coordinate
 import br.lenkeryan.kafka.models.ManagerInfo
-import br.lenkeryan.kafka.models.TemperatureInfo
-import br.lenkeryan.kafka.models.TemperatureProducerInfo
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.StringSerializer
 import br.lenkeryan.kafka.utils.JsonReader
-import br.lenkeryan.kafka.utils.TopicCreator
+import br.lenkeryan.kafka.utils.TopicManager
 import models.ManagerCoordinates
 import utils.Constants
 import java.lang.Error
@@ -21,9 +17,9 @@ import kotlin.random.Random
 
 object ManagerProducer: Runnable {
     var managerInfo: ManagerInfo? = null
-    private var topicCreator = TopicCreator()
+    private var topicCreator = TopicManager()
     private var jsonReader = JsonReader()
-    private val sleepingTime = 10.0 // Time in seconds
+    private val sleepingTime = 20.0 // Time in seconds
     val managersTopic = Constants.managersTopic
 
     @JvmStatic
@@ -94,9 +90,7 @@ object ManagerProducer: Runnable {
     private fun getManagerCoordinates(): ManagerCoordinates {
         val latitude = Random.nextDouble(-90.0, 90.0)
         val longitude = Random.nextDouble(-180.0, 180.0)
-        val managerCoord = ManagerCoordinates(latitude, longitude, managerInfo!!)
-        DatabaseHandler.managerCoordinatesDao.create(managerCoord)
-        return managerCoord
+        return ManagerCoordinates(latitude, longitude, managerInfo!!)
     }
 
 }

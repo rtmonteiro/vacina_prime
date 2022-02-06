@@ -3,7 +3,7 @@ package br.lenkeryan.kafka.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Coordinate(var lat: Double, var lon: Double)
+class Coordinate(var lat: Double, var lon: Double)
 
 @Serializable
 class TemperatureProducerInfo(

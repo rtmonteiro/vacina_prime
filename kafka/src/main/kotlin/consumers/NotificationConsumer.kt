@@ -1,11 +1,11 @@
 package consumers
 
-import br.lenkeryan.kafka.models.*
+import br.lenkeryan.kafka.models.Coordinate
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import models.ManagerCoordinates
+import models.Notification
 import models.ProgramData
-import models.ProgramData.managers
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.KafkaConsumer
@@ -14,9 +14,19 @@ import utils.Constants
 import java.time.Duration
 import java.util.*
 
-class ManagerConsumer: Runnable {
+class NotificationConsumer: Runnable {
+    private val bootstrapServer = "localhost:9092"
     private val topic = Constants.managersTopic
-    private val bootstrapServer = Constants.bootstrapServer
+//    @JvmStatic
+//    fun main(args: Array<String>) {
+//        try {
+//
+//        } catch (err: Error) {
+//            println(err.localizedMessage)
+//        }
+//        run();
+//
+//    }
 
     public override fun run() {
         val prop = Properties()
@@ -33,26 +43,8 @@ class ManagerConsumer: Runnable {
         while (true) {
             val records = consumer.poll(Duration.ofMillis(100))
             for (record in records) {
-                val managerId = record.key()
-                println("ManagerID: $managerId")
-                analyseManagerInfo(record)
+                val notification: Notification = Json.decodeFromString(record.value())
             }
         }
     }
-
-    private fun analyseManagerInfo(record: ConsumerRecord<String, String>) {
-        val info: ManagerCoordinates = Json.decodeFromString(record.value())
-        val managerExists = ProgramData.returnIfManagerExists(record.key())
-        if(managerExists == false) {
-            println("Novo manager com nome ${info.manager!!.name} registrado no consumidor.")
-            managers[record.key()] = info.manager!!
-        } else {
-            val actualManager = managers[record.key()]
-            if (actualManager != null) {
-                actualManager.coordinate =
-                    info.lat?.let { info.lon?.let { it1 -> Coordinate(it, it1) } } // Atualizando a coordenada do manager
-            }
-        }
-    }
-
 }

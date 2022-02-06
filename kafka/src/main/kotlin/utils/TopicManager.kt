@@ -10,7 +10,7 @@ import java.util.stream.Collectors
 import kotlin.streams.toList
 
 
-class TopicCreator {
+class TopicManager {
 
     fun main(args: Array<String>) {
     }

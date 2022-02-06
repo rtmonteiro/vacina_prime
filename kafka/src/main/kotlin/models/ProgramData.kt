@@ -11,12 +11,15 @@ import kotlin.math.sqrt
 
 object ProgramData {
     var managers = ConcurrentHashMap<String, ManagerInfo>()
-
     var knownFreezersMap = ConcurrentHashMap<String, TemperatureProducerInfo>()
 
     fun returnIfFreezerExists(key: String): Boolean {
         knownFreezersMap[key] ?: return false
+        return true;
+    }
 
+    fun returnIfManagerExists(key: String): Boolean {
+        managers[key] ?: return false
         return true;
     }
 
