@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class Vaccine {
-    constructor(brand: String, volume: String, maxTemperature: Double, MinTemperature: Double, maxDuration: Double) {
+    constructor(brand: String, volume: String, maxTemperature: Double, minTemperature: Double, maxDuration: Double) {
         this.brand = brand
         this.volume = volume
         this.maxTemperature = maxTemperature

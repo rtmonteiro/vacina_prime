@@ -1,13 +1,10 @@
 package consumers
 
-import br.lenkeryan.kafka.models.Coordinate
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import models.ManagerCoordinates
 import models.Notification
-import models.ProgramData
+import models.NotificationType
 import org.apache.kafka.clients.consumer.ConsumerConfig
-import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer
 import utils.Constants
@@ -28,7 +25,7 @@ class NotificationConsumer: Runnable {
 //
 //    }
 
-    public override fun run() {
+    override fun run() {
         val prop = Properties()
 
         prop.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer)
@@ -44,6 +41,11 @@ class NotificationConsumer: Runnable {
             val records = consumer.poll(Duration.ofMillis(100))
             for (record in records) {
                 val notification: Notification = Json.decodeFromString(record.value())
+                when (notification.notificationType) {
+                    NotificationType.DISCARD -> print("Descarte, Descarte imediatamiente!")
+                    NotificationType.WARN -> print("Por sua conta em risco")
+                    else -> println("WTF")
+                }
             }
         }
     }

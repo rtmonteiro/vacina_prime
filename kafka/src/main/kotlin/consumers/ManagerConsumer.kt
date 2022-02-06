@@ -1,8 +1,8 @@
 package consumers
 
-import br.lenkeryan.kafka.models.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import models.Coordinate
 import models.ManagerCoordinates
 import models.ProgramData
 import models.ProgramData.managers
@@ -43,7 +43,7 @@ class ManagerConsumer: Runnable {
     private fun analyseManagerInfo(record: ConsumerRecord<String, String>) {
         val info: ManagerCoordinates = Json.decodeFromString(record.value())
         val managerExists = ProgramData.returnIfManagerExists(record.key())
-        if(managerExists == false) {
+        if(!managerExists) {
             println("Novo manager com nome ${info.manager!!.name} registrado no consumidor.")
             managers[record.key()] = info.manager!!
         } else {

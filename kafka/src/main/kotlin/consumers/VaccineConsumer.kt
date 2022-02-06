@@ -1,21 +1,22 @@
-package br.lenkeryan.kafka.consumers
+package consumers
 
-import br.lenkeryan.kafka.models.*
+import models.TemperatureConsumerInfo
+import models.TemperatureInfo
+import models.TemperatureProducerInfo
 import br.lenkeryan.kafka.producers.VaccineProducer
 import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
-import org.apache.kafka.clients.consumer.ConsumerConfig
-import org.apache.kafka.clients.consumer.ConsumerRecord
-import org.apache.kafka.clients.consumer.KafkaConsumer
-import org.apache.kafka.common.serialization.StringDeserializer
-import br.lenkeryan.kafka.utils.JsonReader
 import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import models.Notification
 import models.NotificationType
 import models.ProgramData
+import org.apache.kafka.clients.consumer.ConsumerConfig
+import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
+import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.kafka.common.serialization.StringSerializer
 import utils.Constants
 import java.time.Duration
@@ -42,10 +43,10 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
 //
 //    }
 
-    public override fun run() {
+    override fun run() {
 
         // Cria o consumidor das vacinas
-        val consumer = createConsumer();
+        val consumer = createConsumer()
 
         //shutdown hook
         Runtime.getRuntime().addShutdownHook(Thread {
@@ -63,7 +64,7 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
     }
 
     private fun analyseTemperatureInfo(record: ConsumerRecord<String, String>) {
-        var knowFreezers = ProgramData.knownFreezersMap
+        val knowFreezers = ProgramData.knownFreezersMap
         val info: TemperatureInfo = Json.decodeFromString(record.value())
         if (info.producerInfo != null
             && info.producerInfo!!.vaccines != null) {
@@ -74,7 +75,6 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
 
             val now = record.timestamp()
             val freezer = knowFreezers[info.producerInfo!!.id] ?: return
-            var managers = ProgramData.managers
             var willNotificateWarning = false
             var notification: Notification? = null
 
@@ -92,8 +92,8 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
                             // Descarte
                             notification = Notification(
                                 type = NotificationType.DISCARD,
-                                message = "Descarte a vacina ${vaccine.brand} da câmara de vacinas de id ${freezer.id} do hospital ${freezer.hospital}")
-                            this.sendDiscardNotification(notification!!, freezer)
+                                message ="Descarte a vacina ${vaccine.brand} da câmara de vacinas de id ${freezer.id} do hospital ${freezer.hospital}")
+                            this.sendNotification(notification!!, freezer)
                             println("Descarte a vacina!")
                         } else {
                             // Avisar gestor mais próximo
@@ -110,17 +110,17 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
                             }
                         }
                     } else {
-                        freezer?.vaccines!![index].lastTimeOutOfBounds = now
+                        freezer.vaccines!![index].lastTimeOutOfBounds = now
                     }
                 } else {
                     // Temperatura tudo ok
-                    freezer?.vaccines!![index].lastTimeOutOfBounds = 0L
+                    freezer.vaccines!![index].lastTimeOutOfBounds = 0L
                 }
             }
 
-            if (willNotificateWarning && notification != null) {
+            if (willNotificateWarning) {
                 willNotificateWarning = false
-                this.sendWarningNotification(notification!!, freezer)
+                this.sendNotification(notification!!, freezer)
                 notification = null
             }
         }
@@ -151,25 +151,7 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
         return KafkaProducer<String, String>(prop)
     }
 
-    private fun sendDiscardNotification(notification: Notification, freezer: TemperatureProducerInfo) {
-        val record = ProducerRecord(Constants.notificationsTopic, freezer.hospital, Json.encodeToString(notification) )
-        notificationProducer.send(record) { recordMetadata, e -> //executes a record if success or exception is thrown
-            if (e == null) {
-                println("Producer -> VaccineConsumer de id: " + this.consumerInfo!!.id)
-                println(
-                    """Metadados recebidos
-                                         Topic ${recordMetadata.topic()}
-                                         Partition: ${recordMetadata.partition()}
-                                        Offset: ${recordMetadata.offset()}
-                                        Timestamp: ${recordMetadata.timestamp()}"""
-                )
-            } else {
-                println(e.localizedMessage)
-            }
-        }
-    }
-
-    private fun sendWarningNotification(notification: Notification, freezer: TemperatureProducerInfo) {
+    private fun sendNotification(notification: Notification, freezer: TemperatureProducerInfo) {
         val record = ProducerRecord(Constants.notificationsTopic, freezer.hospital, Json.encodeToString(notification) )
         notificationProducer.send(record) { recordMetadata, e -> //executes a record if success or exception is thrown
             if (e == null) {

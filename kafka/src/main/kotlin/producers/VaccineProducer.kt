@@ -3,15 +3,14 @@ package br.lenkeryan.kafka.producers
 import br.lenkeryan.kafka.utils.TopicManager
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import br.lenkeryan.kafka.models.Coordinate
-import br.lenkeryan.kafka.models.TemperatureInfo
-import br.lenkeryan.kafka.models.TemperatureProducerInfo
+import models.Coordinate
+import models.TemperatureInfo
+import models.TemperatureProducerInfo
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.StringSerializer
 import br.lenkeryan.kafka.utils.JsonReader
-import utils.Perlin
 import java.lang.Error
 import java.util.*
 import kotlin.random.Random
@@ -21,7 +20,7 @@ object VaccineProducer : Runnable {
     var producerInfo: TemperatureProducerInfo? = null
     var topicCreator = TopicManager()
     var jsonReader = JsonReader()
-    val temperatureOutOfBounds = false
+    val temperatureOutOfBounds = true
     private val sleepingTime = 7.0 // Time in seconds
 
     @JvmStatic

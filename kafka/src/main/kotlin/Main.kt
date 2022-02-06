@@ -1,10 +1,15 @@
-import br.lenkeryan.kafka.consumers.VaccineConsumer
+import consumers.VaccineConsumer
 import br.lenkeryan.kafka.utils.JsonReader
 import consumers.ManagerConsumer
-import br.lenkeryan.kafka.models.TemperatureConsumerInfo
+import models.TemperatureConsumerInfo
+import consumers.NotificationConsumer
 
 fun main() {
     val jsonReader = JsonReader()
+
+    // <--- Seção Notifications --->
+    val notificationsConsumer = NotificationConsumer()
+    Thread(notificationsConsumer).start()
 
     // <--- Seção Managers --->
     val managerConsumer = ManagerConsumer()

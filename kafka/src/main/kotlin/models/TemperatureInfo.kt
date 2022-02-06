@@ -1,4 +1,4 @@
-package br.lenkeryan.kafka.models
+package models
 
 import kotlinx.serialization.Serializable
 

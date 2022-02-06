@@ -2,14 +2,14 @@ package br.lenkeryan.kafka.utils
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import br.lenkeryan.kafka.models.ManagerInfo
-import br.lenkeryan.kafka.models.TemperatureConsumerInfo
-import br.lenkeryan.kafka.models.TemperatureProducerInfo
+import models.ManagerInfo
+import models.TemperatureConsumerInfo
+import models.TemperatureProducerInfo
 import java.io.File
 
 class JsonReader {
 
-    fun readProducerJsonInfo(filename: String) : TemperatureProducerInfo{
+    fun readProducerJsonInfo(filename: String) : TemperatureProducerInfo {
         val fileContent = File(filename).readText()
 
         return Json.decodeFromString(fileContent)

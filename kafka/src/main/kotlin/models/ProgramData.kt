@@ -1,8 +1,5 @@
 package models
 
-import br.lenkeryan.kafka.models.Coordinate
-import br.lenkeryan.kafka.models.ManagerInfo
-import br.lenkeryan.kafka.models.TemperatureProducerInfo
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -25,18 +22,18 @@ object ProgramData {
 
     fun getNearestManager(coordinate: Coordinate): ManagerInfo? {
         var nearestManager: ManagerInfo? = null
-        var nearestDistance: Double = 0.0
-        managers.forEach { manager ->
+        var nearestDistance = 0.0
+        managers.values.forEach { manager ->
             if (nearestManager == null) {
-                nearestManager = manager.value
-                nearestDistance = nearestManager!!.coordinate?.let { calculateDistance(coordinate, it) }!!
+                nearestManager = manager
+                nearestDistance = calculateDistance(coordinate, nearestManager!!.coordinate)
             } else {
                 // Corrigir para distancia entre dois pontos
-                val distance = manager.coordinate?.let { calculateDistance(coordinate, it) }
+                val distance = calculateDistance(coordinate, manager.coordinate)
 
                 if (distance != null) {
                     if (distance < nearestDistance) {
-                        nearestManager = manager.value
+                        nearestManager = manager
                     }
                 }
             }

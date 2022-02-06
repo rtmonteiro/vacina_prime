@@ -2,7 +2,7 @@ package br.lenkeryan.kafka.producers
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import br.lenkeryan.kafka.models.ManagerInfo
+import models.ManagerInfo
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
