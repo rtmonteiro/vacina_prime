@@ -11,6 +11,7 @@ import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.StringSerializer
 import br.lenkeryan.kafka.utils.JsonReader
+import utils.Perlin
 import java.lang.Error
 import java.util.*
 import kotlin.random.Random
@@ -29,17 +30,17 @@ object VaccineProducer : Runnable {
             if (filename == null) {
                 println("Por favor informe o nome do arquivo")
             }
-            var data = jsonReader.readProducerJsonInfo(filename)
+            val data = jsonReader.readProducerJsonInfo(filename)
             producerInfo = data
         } catch (err: Error) {
             println(err.localizedMessage)
         }
-        run();
+        run()
     }
 
-    public override fun run() {
+    override fun run() {
         //cria produtor com as devidas propriedades (SerDes customizado)
-        var producer: KafkaProducer<String, String> = createProducer();
+        val producer: KafkaProducer<String, String> = createProducer()
 
         //shutdown hook
         Runtime.getRuntime().addShutdownHook(Thread {
@@ -69,7 +70,7 @@ object VaccineProducer : Runnable {
                     println(e.localizedMessage)
                 }
             }
-            Thread.sleep((sleepingTime * 1000).toLong());
+            Thread.sleep((sleepingTime * 1000).toLong())
         }
     }
 
@@ -91,8 +92,8 @@ object VaccineProducer : Runnable {
         val latitude = Random.nextDouble(-90.0, 90.0)
         val longitude = Random.nextDouble(-180.0, 180.0)
         val coord = Coordinate(latitude, longitude)
-        val temp = Random.nextDouble() * 100 + 29
-        return  TemperatureInfo(temp, producerInfo!!, coord)
+        val temp = Perlin.noise(0.0, 0.0, Random.nextDouble()) * 100 + 29
+        return TemperatureInfo(temp, producerInfo!!, coord)
     }
 
 }
