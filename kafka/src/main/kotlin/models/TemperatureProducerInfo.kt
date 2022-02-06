@@ -10,4 +10,5 @@ class TemperatureProducerInfo(
     var id: String,
     var hospital: String,
     var vaccines: List<Vaccine>? = null,
+    var coordinate: Coordinate
 )

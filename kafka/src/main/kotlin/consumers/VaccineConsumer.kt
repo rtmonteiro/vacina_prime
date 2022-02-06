@@ -24,8 +24,6 @@ import java.util.*
 
 class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
     private var consumerInfo: TemperatureConsumerInfo? = consumerInfo
-    private var knowFreezers = ProgramData.knownFreezersMap
-    private var managers = ProgramData.managers
 //    val jsonReader = JsonReader()
     private val bootstrapServer = Constants.bootstrapServer
     // Produtor das notificações
@@ -65,6 +63,7 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
     }
 
     private fun analyseTemperatureInfo(record: ConsumerRecord<String, String>) {
+        var knowFreezers = ProgramData.knownFreezersMap
         val info: TemperatureInfo = Json.decodeFromString(record.value())
         if (info.producerInfo != null
             && info.producerInfo!!.vaccines != null) {
@@ -75,6 +74,9 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
 
             val now = record.timestamp()
             val freezer = knowFreezers[info.producerInfo!!.id] ?: return
+            var managers = ProgramData.managers
+            var willNotificateWarning = false
+            var notification: Notification? = null
 
             freezer.vaccines!!.forEachIndexed { index, vaccine ->
                 val isTemperatureOutOfBounds = vaccine.checkIfTemperatureIsOutOfBounds(info.value)
@@ -88,10 +90,10 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
                         println("Diferença em ms da última vez que a vacina esteve fora do limite: $timeDifference")
                         if (timeDifference >= vaccine.maxDuration * 1000 * 3600) {
                             // Descarte
-                            val notification = Notification(
+                            notification = Notification(
                                 type = NotificationType.DISCARD,
-                                message = "Descarte a vacina da câmara de vacinas de id ${freezer.id} do hospital ${freezer.hospital}")
-                            this.sendDiscardNotification(notification, freezer)
+                                message = "Descarte a vacina ${vaccine.brand} da câmara de vacinas de id ${freezer.id} do hospital ${freezer.hospital}")
+                            this.sendDiscardNotification(notification!!, freezer)
                             println("Descarte a vacina!")
                         } else {
                             // Avisar gestor mais próximo
@@ -99,12 +101,12 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
                             if(nearestManager == null) {
                                 println("Não existe um Manager próximo conhecido!")
                             } else {
-                                val notification = Notification(
+                                notification = Notification(
                                     type = NotificationType.WARN,
                                     message = "Atenção! A câmara de vacina de id ${freezer.id} do hospital ${freezer.hospital} está com temperaturas fora do limite, por favor verifique",
                                     manager = nearestManager)
-                                this.sendWarningNotification(notification, freezer)
-                                println("Avisando manager mais proximo(${nearestManager.name}) no telefone ${nearestManager.phone}")
+                                willNotificateWarning = true
+                                println("Avisando manager mais proximo(${notification!!.managerToNotificate!!.name}) no telefone ${notification!!.managerToNotificate!!.phone}")
                             }
                         }
                     } else {
@@ -114,6 +116,12 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
                     // Temperatura tudo ok
                     freezer?.vaccines!![index].lastTimeOutOfBounds = 0L
                 }
+            }
+
+            if (willNotificateWarning && notification != null) {
+                willNotificateWarning = false
+                this.sendWarningNotification(notification!!, freezer)
+                notification = null
             }
         }
     }

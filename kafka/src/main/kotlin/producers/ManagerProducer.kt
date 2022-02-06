@@ -11,15 +11,15 @@ import br.lenkeryan.kafka.utils.JsonReader
 import br.lenkeryan.kafka.utils.TopicManager
 import models.ManagerCoordinates
 import utils.Constants
-import java.lang.Error
 import java.util.*
+import kotlin.Error
 import kotlin.random.Random
 
 object ManagerProducer: Runnable {
     var managerInfo: ManagerInfo? = null
     private var topicCreator = TopicManager()
     private var jsonReader = JsonReader()
-    private val sleepingTime = 20.0 // Time in seconds
+    private val sleepingTime = 10.0 // Time in seconds
     val managersTopic = Constants.managersTopic
 
     @JvmStatic
@@ -46,7 +46,6 @@ object ManagerProducer: Runnable {
             producer.close()
         })
         while (true) {
-//            var temperature: Temperature = Temperature(Random.nextDouble())
             if (managerInfo == null) {
                 return
             }
@@ -88,8 +87,9 @@ object ManagerProducer: Runnable {
     }
 
     private fun getManagerCoordinates(): ManagerCoordinates {
-        val latitude = Random.nextDouble(-90.0, 90.0)
-        val longitude = Random.nextDouble(-180.0, 180.0)
+        if ( managerInfo == null ) { throw Error() }
+        val latitude = Random.nextDouble(-0.001, 0.001) + managerInfo!!.coordinate.lat
+        val longitude = Random.nextDouble(-0.001, 0.001) + managerInfo!!.coordinate.lon
         return ManagerCoordinates(latitude, longitude, managerInfo!!)
     }
 

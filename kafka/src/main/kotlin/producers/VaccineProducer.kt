@@ -21,6 +21,7 @@ object VaccineProducer : Runnable {
     var producerInfo: TemperatureProducerInfo? = null
     var topicCreator = TopicManager()
     var jsonReader = JsonReader()
+    val temperatureOutOfBounds = false
     private val sleepingTime = 7.0 // Time in seconds
 
     @JvmStatic
@@ -89,10 +90,17 @@ object VaccineProducer : Runnable {
     }
 
     private fun getTemperatureInfo(): TemperatureInfo {
-        val latitude = Random.nextDouble(-90.0, 90.0)
-        val longitude = Random.nextDouble(-180.0, 180.0)
+        val latitude = Random.nextDouble(-0.001, 0.001) + this.producerInfo!!.coordinate.lat
+        val longitude = Random.nextDouble(-0.001, 0.001) + this.producerInfo!!.coordinate.lon
         val coord = Coordinate(latitude, longitude)
-        val temp = Perlin.noise(0.0, 0.0, Random.nextDouble()) * 100 + 29
+        var temp = 0.0
+        if (temperatureOutOfBounds) {
+            val vaccine = this.producerInfo!!.vaccines?.get(0)!!
+            temp = Random.nextDouble(vaccine.maxTemperature, vaccine.maxTemperature + 10);
+        } else {
+            val vaccine = this.producerInfo!!.vaccines?.get(0)!!
+            temp = Random.nextDouble(vaccine.minTemperature + 1 , vaccine.maxTemperature - 1);
+        }
         return TemperatureInfo(temp, producerInfo!!, coord)
     }
 

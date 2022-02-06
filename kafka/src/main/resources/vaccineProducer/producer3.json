@@ -1,6 +1,10 @@
 {
   "id": "3",
   "hospital": "hospital-santa-paula",
+  "coordinate": {
+    "lat": -20.25512,
+    "lon": -40.2722854
+  },
   "vaccines": [
     {
       "brand": "Janssen",

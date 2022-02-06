@@ -49,8 +49,8 @@ class ManagerConsumer: Runnable {
         } else {
             val actualManager = managers[record.key()]
             if (actualManager != null) {
-                actualManager.coordinate =
-                    info.lat?.let { info.lon?.let { it1 -> Coordinate(it, it1) } } // Atualizando a coordenada do manager
+                actualManager.coordinate = Coordinate(info.lat, info.lon)
+
             }
         }
     }

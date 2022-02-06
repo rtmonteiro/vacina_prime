@@ -1,6 +1,10 @@
 {
   "id": "2",
   "hospital": "hospital-vitoria-apart",
+  "coordinate": {
+    "lat": -20.2364748,
+    "lon": 40.2814681
+  },
   "vaccines": [
     {
       "brand": "Jansen",

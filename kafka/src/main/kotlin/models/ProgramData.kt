@@ -32,7 +32,7 @@ object ProgramData {
                 nearestDistance = nearestManager!!.coordinate?.let { calculateDistance(coordinate, it) }!!
             } else {
                 // Corrigir para distancia entre dois pontos
-                val distance = nearestManager!!.coordinate?.let { calculateDistance(coordinate, it) }
+                val distance = manager.coordinate?.let { calculateDistance(coordinate, it) }
 
                 if (distance != null) {
                     if (distance < nearestDistance) {

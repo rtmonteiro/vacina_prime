@@ -12,23 +12,10 @@ import kotlin.time.*
 @Serializable
 @DatabaseTable(tableName = "manager_coordinates")
 class ManagerCoordinates {
-
-    @DatabaseField(generatedId = true, canBeNull = false)
     var id: Int? = null
-
-    @DatabaseField(canBeNull = false)
-    var lat: Double? = null
-
-    @DatabaseField(canBeNull = false)
-    var lon: Double? = null
-
-    @DatabaseField(canBeNull = false, foreign = true)
-    var manager: ManagerInfo? = null
-
-    @DatabaseField()
-    var created_at: Long = System.currentTimeMillis()
-
-    constructor() {} // Required for ORM
+    var lat: Double
+    var lon: Double
+    var manager: ManagerInfo
 
     constructor(lat: Double, lon: Double, manager: ManagerInfo) {
         this.lat = lat

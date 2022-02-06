@@ -1,15 +1,22 @@
 [
   {
-    "id": "1",
-    "name": "Ryan Tavares",
-    "phone": "+5527999405527",
-    "email": "ryan@gmail.com"
-  },
-  {
     "id": "2",
     "name": "Matheus Lenke",
     "phone": "+5527999405527",
-    "email": "matheuslenke@gmail.com"
+    "email": "matheuslenke@gmail.com",
+    "coordinates": {
+      "lat": -18.6758348,
+      "lon": -39.8623881
+    }
+  },
+  {
+    "id": "1",
+    "name": "Ryan Tavares",
+    "phone": "+5527999405527",
+    "email": "ryan@gmail.com",
+    "coordinates": {
+      "lat": -20.2769499,
+      "lon": -40.3068654
+    }
   }
-
 ]
