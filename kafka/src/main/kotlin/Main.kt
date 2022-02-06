@@ -27,5 +27,4 @@ fun main() {
     vaccineConsumers.forEach { consumer ->
         Thread(consumer).start()
     }
-
 }
