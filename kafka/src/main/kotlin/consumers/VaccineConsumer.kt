@@ -11,7 +11,7 @@ import org.apache.kafka.common.serialization.StringDeserializer
 import br.lenkeryan.kafka.utils.JsonReader
 import br.lenkeryan.kafka.utils.TwilioApi
 import consumers.ManagerConsumer
-import models.ProgramData.knownFreezersMap
+import models.ProgramData
 import org.apache.kafka.common.serialization.Serdes
 import java.time.Duration
 import java.util.*
@@ -22,23 +22,23 @@ import org.apache.kafka.streams.kstream.KStream
 import org.slf4j.LoggerFactory
 
 
-object VaccineConsumer: Runnable {
-    var consumerInfo: TemperatureConsumerInfo? = null
-    private val twilioApi = TwilioApi()
+class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
+    var consumerInfo: TemperatureConsumerInfo? = consumerInfo
+    var knowFreezers = ProgramData.knownFreezersMap
     val jsonReader = JsonReader()
 
-    @JvmStatic
-    fun main(args: Array<String>) {
-        try {
-            val filename = args[0]
-            var data = jsonReader.readConsumerJsonInfo(filename)
-            consumerInfo = data
-        } catch (err: Error) {
-            println(err.localizedMessage)
-        }
-        run();
-
-    }
+//    @JvmStatic
+//    fun main(args: Array<String>) {
+//        try {
+//            val filename = args[0]
+//            var data = jsonReader.readConsumerJsonInfo(filename)
+//            consumerInfo = data
+//        } catch (err: Error) {
+//            println(err.localizedMessage)
+//        }
+//        run();
+//
+//    }
 
     public override fun run() {
         val BootstrapServer = "localhost:9092"
@@ -68,28 +68,30 @@ object VaccineConsumer: Runnable {
         if (info.producerInfo != null
             && info.producerInfo!!.vaccines != null) {
             // Checa primeiro se esta camara de vacinas já está registrada
-            if(!knownFreezersMap.contains(info.producerInfo!!.id))
-                knownFreezersMap[info.producerInfo!!.id] = info.producerInfo!!
+            val contains = knowFreezers.contains(info.producerInfo!!.id)
+            if(contains == false)
+                knowFreezers[info.producerInfo!!.id] = info.producerInfo!!
 
             val now = record.timestamp()
-            println("Timestamp de envio: $now")
-            knownFreezersMap[info.producerInfo!!.id]?.vaccines!!.forEachIndexed { index, vaccine ->
+            val freezer = knowFreezers.get(info.producerInfo!!.id)
+            if(freezer == null) { return }
+            freezer.vaccines!!.forEachIndexed { index, vaccine ->
                 val isTemperatureOutOfBounds = vaccine.checkIfTemperatureIsOutOfBounds(info.value)
 
                 if(isTemperatureOutOfBounds) {
                     // Temperatura fora do limite desejado
                     // Fora por quanto tempo??
                     println("Temperatura fora dos limites para uma vacina! valor: ${info.value}")
-                    val zero: Long = 0
-                    if (vaccine.lastTimeOutOfBounds != zero) {
+                    if (vaccine.lastTimeOutOfBounds.compareTo(0.0) != 0) {
                         val timeDifference = now - vaccine.lastTimeOutOfBounds
+                        println("Diferença em ms da última vez que a vacina esteve fora do limite: $timeDifference")
                         if (timeDifference >= vaccine.maxDuration * 1000 * 3600) {
                             // Descarte
 //                            twilioApi.sendMessage("+5527999405527", "Descarte a vacina")
                             println("Descarte a vacina!")
                         } else {
                             // Avisar gestor mais próximo
-                            val nearestManager = info.actualCoordinate?.let { ManagerConsumer.getNearestManager(it) }
+                            val nearestManager = info.actualCoordinate?.let { ProgramData.getNearestManager(it) }
                             if(nearestManager == null) {
                                 println("Não existe um Manager próximo conhecido!")
                             } else {
@@ -98,13 +100,11 @@ object VaccineConsumer: Runnable {
                             }
                         }
                     } else {
-                        knownFreezersMap[info.producerInfo!!.id]
-                            ?.vaccines!![index].lastTimeOutOfBounds = now
+                        freezer?.vaccines!![index].lastTimeOutOfBounds = now
                     }
                 } else {
                     // Temperatura tudo ok
-                    knownFreezersMap[info.producerInfo!!.id]
-                        ?.vaccines!![index].lastTimeOutOfBounds = 0L
+                    freezer?.vaccines!![index].lastTimeOutOfBounds = 0L
                 }
             }
         }

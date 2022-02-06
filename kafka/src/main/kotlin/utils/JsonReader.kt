@@ -27,4 +27,22 @@ class JsonReader {
         return Json.decodeFromString(fileContent)
     }
 
+    fun readProducerJsonList(filename: String) : ArrayList<TemperatureProducerInfo>{
+        val fileContent = File(filename).readText()
+
+        return Json.decodeFromString(fileContent)
+    }
+
+    fun readConsumerJsonList(filename: String) : ArrayList<TemperatureConsumerInfo> {
+        val fileContent = File(filename).readText()
+
+        return Json.decodeFromString(fileContent)
+    }
+
+    fun readManagerJsonList(filename: String) : ArrayList<ManagerInfo> {
+        val fileContent = File(filename).readText()
+
+        return Json.decodeFromString(fileContent)
+    }
+
 }

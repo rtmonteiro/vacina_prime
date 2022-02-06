@@ -91,7 +91,7 @@ object VaccineProducer : Runnable {
         val latitude = Random.nextDouble(-90.0, 90.0)
         val longitude = Random.nextDouble(-180.0, 180.0)
         val coord = Coordinate(latitude, longitude)
-        val temp = Random.nextDouble() * 100
+        val temp = Random.nextDouble() * 100 + 29
         return  TemperatureInfo(temp, producerInfo!!, coord)
     }
 

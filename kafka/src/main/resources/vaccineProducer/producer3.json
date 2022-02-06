@@ -3,11 +3,11 @@
   "hospital": "hospital-santa-paula",
   "vaccines": [
     {
-      "brand": "Jansen",
+      "brand": "Coronavac",
       "volume": "1",
       "maxTemperature": 25,
       "minTemperature": 9,
-      "maxDuration": 12
+      "maxDuration": 0.1
     }
   ]
 }
