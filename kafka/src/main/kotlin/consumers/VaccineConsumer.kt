@@ -68,7 +68,7 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
         if (info.producerInfo != null
             && info.producerInfo!!.vaccines != null) {
             // Checa primeiro se esta camara de vacinas já está registrada
-            val contains = knowFreezers.contains(info.producerInfo!!.id)
+            val contains = ProgramData.returnIfFreezerExists(info.producerInfo!!.id)
             if(contains == false)
                 knowFreezers[info.producerInfo!!.id] = info.producerInfo!!
 

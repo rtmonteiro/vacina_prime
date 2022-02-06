@@ -14,6 +14,12 @@ object ProgramData {
 
     var knownFreezersMap = ConcurrentHashMap<String, TemperatureProducerInfo>()
 
+    fun returnIfFreezerExists(key: String): Boolean {
+        knownFreezersMap[key] ?: return false
+
+        return true;
+    }
+
     fun getNearestManager(coordinate: Coordinate): ManagerInfo? {
         var nearestManager: ManagerInfo? = null
         var nearestDistance: Double = 0.0
