@@ -3,7 +3,7 @@
   "name": "Matheus Lenke",
   "phone": "+5527999405527",
   "email": "matheuslenke@gmail.com",
-  "coordinate": {
+  "initialCoordinate": {
     "lat": -18.6758348,
     "lon": -39.8623881
   }

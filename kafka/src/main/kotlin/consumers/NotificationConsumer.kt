@@ -13,7 +13,7 @@ import java.util.*
 
 class NotificationConsumer: Runnable {
     private val bootstrapServer = "localhost:9092"
-    private val topic = Constants.managersTopic
+    private val topic = Constants.notificationsTopic
 //    @JvmStatic
 //    fun main(args: Array<String>) {
 //        try {

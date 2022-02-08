@@ -89,8 +89,8 @@ object VaccineProducer : Runnable {
     }
 
     private fun getTemperatureInfo(): TemperatureInfo {
-        val latitude = Random.nextDouble(-0.001, 0.001) + this.producerInfo!!.coordinate.lat
-        val longitude = Random.nextDouble(-0.001, 0.001) + this.producerInfo!!.coordinate.lon
+        val latitude = Random.nextDouble(-0.001, 0.001) + this.producerInfo!!.initialCoordinate.lat
+        val longitude = Random.nextDouble(-0.001, 0.001) + this.producerInfo!!.initialCoordinate.lon
         val coord = Coordinate(latitude, longitude)
         var temp = 0.0
         if (temperatureOutOfBounds) {

@@ -4,7 +4,6 @@ import com.j256.ormlite.table.DatabaseTable
 import kotlinx.serialization.Serializable
 
 @Serializable
-@DatabaseTable(tableName = "manager_coordinates")
 class ManagerCoordinates {
     var id: Int? = null
     var lat: Double

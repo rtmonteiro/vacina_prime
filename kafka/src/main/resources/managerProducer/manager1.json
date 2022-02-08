@@ -3,7 +3,7 @@
   "name": "Ryan Tavares",
   "phone": "+5527999405527",
   "email": "ryan@gmail.com",
-  "coordinate": {
+  "initialCoordinate": {
     "lat": -20.2769499,
     "lon": -40.3068654
   }

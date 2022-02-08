@@ -88,8 +88,8 @@ object ManagerProducer: Runnable {
 
     private fun getManagerCoordinates(): ManagerCoordinates {
         if ( managerInfo == null ) { throw Error() }
-        val latitude = Random.nextDouble(-0.001, 0.001) + managerInfo!!.coordinate.lat
-        val longitude = Random.nextDouble(-0.001, 0.001) + managerInfo!!.coordinate.lon
+        val latitude = Random.nextDouble(-0.001, 0.001) + managerInfo!!.initialCoordinate.lat
+        val longitude = Random.nextDouble(-0.001, 0.001) + managerInfo!!.initialCoordinate.lon
         return ManagerCoordinates(latitude, longitude, managerInfo!!)
     }
 

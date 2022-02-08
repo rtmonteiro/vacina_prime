@@ -1,7 +1,7 @@
 {
   "id": "3",
   "hospital": "hospital-santa-paula",
-  "coordinate": {
+  "initialCoordinate": {
     "lat": -20.25512,
     "lon": -40.2722854
   },

@@ -8,16 +8,16 @@ class ManagerInfo{
     lateinit var name: String
     lateinit var phone: String
     lateinit var email: String
-    lateinit var coordinate: Coordinate
+    lateinit var initialCoordinate: Coordinate
 
     fun ManagerInfo() {} // Required for ORMlite
 
-    fun ManagerInfo(id: String, name: String, phone: String, email: String, coordinate: Coordinate) {
+    fun ManagerInfo(id: String, name: String, phone: String, email: String, initialCoordinate: Coordinate) {
         this.id = id
         this.name = name
         this.phone = phone
         this.email = email
-        this.coordinate = coordinate
+        this.initialCoordinate = initialCoordinate
     }
 
 

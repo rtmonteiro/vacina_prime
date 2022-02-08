@@ -26,10 +26,10 @@ object ProgramData {
         managers.values.forEach { manager ->
             if (nearestManager == null) {
                 nearestManager = manager
-                nearestDistance = calculateDistance(coordinate, nearestManager!!.coordinate)
+                nearestDistance = calculateDistance(coordinate, nearestManager!!.initialCoordinate)
             } else {
                 // Corrigir para distancia entre dois pontos
-                val distance = calculateDistance(coordinate, manager.coordinate)
+                val distance = calculateDistance(coordinate, manager.initialCoordinate)
 
                 if (distance != null) {
                     if (distance < nearestDistance) {
