@@ -17,7 +17,7 @@ import kotlin.random.Random
 
 object ManagerProducer: Runnable {
     var managerInfo: ManagerInfo? = null
-    private var topicCreator = TopicManager()
+    private var topicManager = TopicManager()
     private var jsonReader = JsonReader()
     private val sleepingTime = 10.0 // Time in seconds
     val managersTopic = Constants.managersTopic
@@ -68,7 +68,6 @@ object ManagerProducer: Runnable {
                     println(e.localizedMessage)
                 }
             }
-            println("Mimir")
             Thread.sleep((sleepingTime * 1000).toLong())
         }
     }
@@ -82,7 +81,7 @@ object ManagerProducer: Runnable {
         prop.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
         prop.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
 
-        topicCreator.createTopic(managersTopic, 20)
+        topicManager.createTopic(managersTopic, Constants.managersNumberPartitions)
         return KafkaProducer<String, String>(prop)
     }
 

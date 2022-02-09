@@ -8,8 +8,8 @@ fun main() {
     val jsonReader = JsonReader()
 
     // <--- Seção Notifications --->
-    val notificationsConsumer = NotificationConsumer()
-    Thread(notificationsConsumer).start()
+//    val notificationsConsumer = NotificationConsumer()
+//    Thread(notificationsConsumer).start()
 
     // <--- Seção Managers --->
     val managerConsumer = ManagerConsumer()

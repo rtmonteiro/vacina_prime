@@ -11,6 +11,7 @@ import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.StringSerializer
 import br.lenkeryan.kafka.utils.JsonReader
+import utils.Constants
 import java.lang.Error
 import java.util.*
 import kotlin.random.Random
@@ -18,9 +19,9 @@ import kotlin.random.Random
 object VaccineProducer : Runnable {
 
     var producerInfo: TemperatureProducerInfo? = null
-    var topicCreator = TopicManager()
+    var topicManager = TopicManager()
     var jsonReader = JsonReader()
-    val temperatureOutOfBounds = true
+    var temperatureOutOfBounds = true
     private val sleepingTime = 7.0 // Time in seconds
 
     @JvmStatic
@@ -32,6 +33,8 @@ object VaccineProducer : Runnable {
             }
             val data = jsonReader.readProducerJsonInfo(filename)
             producerInfo = data
+
+            temperatureOutOfBounds = args[1].toBoolean()
         } catch (err: Error) {
             println(err.localizedMessage)
         }
@@ -84,7 +87,7 @@ object VaccineProducer : Runnable {
         prop.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
 
         val topicName: String = producerInfo!!.hospital
-        topicCreator.createTopic(topicName, 10)
+        topicManager.createTopic(topicName, Constants.vaccineNumberPartitions)
         return KafkaProducer<String, String>(prop)
     }
 

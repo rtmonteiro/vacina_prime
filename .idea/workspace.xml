@@ -5,25 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1a9e9d1e-8f69-42f1-b726-aa015d5051a5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/consumers/VaccineConsumer.class" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/consumers/VaccineConsumer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/database/DatabaseHandler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/Coordinate.class" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/Coordinate.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/ManagerInfo$$serializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/ManagerInfo$$serializer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/ManagerInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/ManagerInfo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/TemperatureProducerInfo$$serializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/TemperatureProducerInfo$$serializer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/TemperatureProducerInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/TemperatureProducerInfo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/Vaccine$$serializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/Vaccine$$serializer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/consumers/VaccineConsumer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/Coordinate$$serializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/Coordinate$Companion.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/Coordinate.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/ManagerInfo$$serializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/ManagerInfo$Companion.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/ManagerInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/TemperatureConsumerInfo$$serializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/TemperatureConsumerInfo$Companion.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/TemperatureConsumerInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/TemperatureInfo$$serializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/TemperatureInfo$Companion.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/TemperatureInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/TemperatureProducerInfo$$serializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/TemperatureProducerInfo$Companion.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/TemperatureProducerInfo.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/Vaccine.class" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/models/Vaccine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/producers/ManagerProducer.class" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/producers/ManagerProducer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/producers/ManagerProducer.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/producers/VaccineProducer.class" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/producers/VaccineProducer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/utils/TopicCreator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/utils/JsonReader.class" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/classes/kotlin/main/br/lenkeryan/kafka/utils/JsonReader.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/build-history.bin" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/build-history.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.keystream" afterDir="false" />
@@ -34,13 +43,11 @@
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-attributes.tab" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-attributes.tab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-attributes.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-attributes.tab.keystream" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-attributes.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-attributes.tab.len" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-attributes.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-attributes.tab.values.at" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-attributes.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-attributes.tab_i" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab" afterDir="false" />
@@ -52,7 +59,6 @@
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.keystream" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.len" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.values.at" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab_i" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab" afterDir="false" />
@@ -62,14 +68,10 @@
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab_i" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab_i" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.keystream" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.len" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.values.at" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab_i" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/lookups/counters.tab" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/lookups/counters.tab" afterDir="false" />
@@ -92,26 +94,15 @@
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.values.at" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab_i" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/last-build.bin" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build/kotlin/compileKotlin/last-build.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/Main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/ManagerConsumer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/ManagerConsumer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/NotificationConsumer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/NotificationConsumer.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/VaccineConsumer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/VaccineConsumer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/models/ManagerCoordinates.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/models/ManagerCoordinates.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/models/ManagerInfo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/models/ManagerInfo.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/models/ProgramData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/models/ProgramData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/models/TemperatureProducerInfo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/models/TemperatureProducerInfo.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/models/Vaccine.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/models/Vaccine.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/producers/ManagerProducer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/producers/ManagerProducer.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/producers/VaccineProducer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/producers/VaccineProducer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/src/main/resources/managerProducer/manager1.json" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/resources/managerProducer/manager1.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/src/main/resources/managerProducer/manager2.json" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/resources/managerProducer/manager2.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/src/main/resources/managerProducer/managers.json" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/resources/managerProducer/managers.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/src/main/resources/vaccineProducer/producer1.json" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/resources/vaccineProducer/producer1.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/src/main/resources/vaccineProducer/producer2.json" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/resources/vaccineProducer/producer2.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/src/main/resources/vaccineProducer/producer3.json" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/resources/vaccineProducer/producer3.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/utils/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/utils/Constants.kt" afterDir="false" />
     </list>
-    <list id="9b243e2c-113a-4463-b1f8-91af24c8dd2d" name="Changes by ryan" comment="">
-      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/ManagerConsumer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/ManagerConsumer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/models/ProgramData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/models/ProgramData.kt" afterDir="false" />
-    </list>
+    <list id="9b243e2c-113a-4463-b1f8-91af24c8dd2d" name="Changes by ryan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -187,22 +178,6 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/kafka/src/main/kotlin/models/ProgramData.kt">
-      <ranges>
-        <range start1="28" end1="29" start2="28" end2="29" changelist="9b243e2c-113a-4463-b1f8-91af24c8dd2d" />
-        <range start1="30" end1="31" start2="30" end2="31" changelist="9b243e2c-113a-4463-b1f8-91af24c8dd2d" />
-        <range start1="34" end1="35" start2="34" end2="35" changelist="1a9e9d1e-8f69-42f1-b726-aa015d5051a5" />
-        <range start1="38" end1="39" start2="38" end2="39" changelist="9b243e2c-113a-4463-b1f8-91af24c8dd2d" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/ManagerConsumer.kt">
-      <ranges>
-        <range start1="45" end1="48" start2="45" end2="48" changelist="9b243e2c-113a-4463-b1f8-91af24c8dd2d" />
-        <range start1="51" end1="53" start2="51" end2="53" changelist="1a9e9d1e-8f69-42f1-b726-aa015d5051a5" />
-      </ranges>
-    </file>
-  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -255,7 +230,7 @@
       <command value="gradle build" />
     </option>
   </component>
-  <component name="RunManager" selected="Kotlin.VaccineProducer (hospital-santa-paula)">
+  <component name="RunManager" selected="Kotlin.Consumers Threads">
     <configuration name="Consumers Threads" type="JetRunConfigurationType" temporary="true">
       <envs>
         <env name="TWILIO_ACCOUNT_SID" value="AC6dc2272e85871ea848f1b39b9c81edba" />
@@ -269,15 +244,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ManagerConsumer" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="consumers.ManagerConsumer" />
-      <module name="VaccinePrime.kafka.main" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ManagerProducer ( Matheus)" type="JetRunConfigurationType" singleton="false" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="br.lenkeryan.kafka.producers.ManagerProducer" />
+      <option name="MAIN_CLASS_NAME" value="producers.ManagerProducer" />
       <module name="VaccinePrime.kafka.main" />
       <option name="PROGRAM_PARAMETERS" value="managerProducer/manager2.json" />
       <shortenClasspath name="NONE" />
@@ -287,11 +255,18 @@
       </method>
     </configuration>
     <configuration name="ManagerProducer ( Ryan )" type="JetRunConfigurationType" singleton="false">
-      <option name="MAIN_CLASS_NAME" value="br.lenkeryan.kafka.producers.ManagerProducer" />
+      <option name="MAIN_CLASS_NAME" value="producers.ManagerProducer" />
       <module name="VaccinePrime.kafka.main" />
       <option name="PROGRAM_PARAMETERS" value="managerProducer/manager1.json" />
       <shortenClasspath name="NONE" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/kafka/src/main/resources" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="NotificationConsumer" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="consumers.NotificationConsumer" />
+      <module name="VaccinePrime.kafka.main" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -301,7 +276,7 @@
         <env name="TWILIO_ACCOUNT_SID" value="AC6dc2272e85871ea848f1b39b9c81edba" />
         <env name="TWILIO_AUTH_TOKEN" value="f65449db7e223623d22001a6d03bda3a" />
       </envs>
-      <option name="MAIN_CLASS_NAME" value="br.lenkeryan.kafka.consumers.VaccineConsumer" />
+      <option name="MAIN_CLASS_NAME" value="consumers.VaccineConsumer" />
       <module name="VaccinePrime.kafka.main" />
       <option name="PROGRAM_PARAMETERS" value="vaccineConsumer/consumer1.json" />
       <shortenClasspath name="NONE" />
@@ -331,7 +306,7 @@
       </envs>
       <option name="MAIN_CLASS_NAME" value="br.lenkeryan.kafka.producers.VaccineProducer" />
       <module name="VaccinePrime.kafka.main" />
-      <option name="PROGRAM_PARAMETERS" value="vaccineProducer/producer1.json" />
+      <option name="PROGRAM_PARAMETERS" value="vaccineProducer/producer1.json false" />
       <shortenClasspath name="NONE" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/kafka/src/main/resources" />
       <method v="2">
@@ -382,16 +357,16 @@
       <item itemvalue="Kotlin.VaccineConsumer" />
       <item itemvalue="Kotlin.VaccineProducer (hospital-santa-paula)" />
       <item itemvalue="Kotlin.ManagerProducer ( Matheus)" />
-      <item itemvalue="Kotlin.ManagerConsumer" />
       <item itemvalue="Kotlin.Consumers Threads" />
+      <item itemvalue="Kotlin.NotificationConsumer" />
       <item itemvalue="Spring Boot.Application" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Kotlin.VaccineProducer (hospital-santa-paula)" />
-        <item itemvalue="Kotlin.ManagerConsumer" />
-        <item itemvalue="Kotlin.ManagerProducer ( Matheus)" />
         <item itemvalue="Kotlin.Consumers Threads" />
+        <item itemvalue="Kotlin.VaccineProducer (hospital-santa-paula)" />
+        <item itemvalue="Kotlin.NotificationConsumer" />
+        <item itemvalue="Kotlin.ManagerProducer ( Matheus)" />
         <item itemvalue="Kotlin.VaccineConsumer" />
       </list>
     </recent_temporary>
@@ -508,15 +483,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="Notifcation producer" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/kafka/src/main/kotlin/producers/VaccineProducer.kt</url>
-          <line>103</line>
-          <option name="timeStamp" value="43" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="JetRunConfigurationType">
         <watch expression="knowFreezers" language="kotlin" />

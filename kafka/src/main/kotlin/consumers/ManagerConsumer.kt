@@ -34,7 +34,6 @@ class ManagerConsumer: Runnable {
             val records = consumer.poll(Duration.ofMillis(100))
             for (record in records) {
                 val managerId = record.key()
-                println("ManagerID: $managerId")
                 analyseManagerInfo(record)
             }
         }
@@ -44,7 +43,7 @@ class ManagerConsumer: Runnable {
         val info: ManagerCoordinates = Json.decodeFromString(record.value())
         val managerExists = ProgramData.returnIfManagerExists(record.key())
         if(!managerExists) {
-            println("Novo manager com nome ${info.manager!!.name} registrado no consumidor.")
+            println("[ManagerConsumer] Novo manager com nome ${info.manager!!.name} registrado no consumidor.")
             managers[record.key()] = info.manager!!
         } else {
             val actualManager = managers[record.key()]
