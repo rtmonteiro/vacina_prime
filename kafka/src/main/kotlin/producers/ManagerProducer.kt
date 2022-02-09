@@ -1,4 +1,4 @@
-package br.lenkeryan.kafka.producers
+package producers
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -26,19 +26,19 @@ object ManagerProducer: Runnable {
     fun main(args: Array<String>) {
         try {
             val filename = args[0]
-            var data = jsonReader.readManagerJsonInfo(filename)
+            val data = jsonReader.readManagerJsonInfo(filename)
             managerInfo = data
         } catch (err: Error) {
             println(err.localizedMessage)
         }
-        run();
+        run()
 
     }
 
-    public override fun run() {
+    override fun run() {
 
         //cria produtor com as devidas propriedades (SerDes customizado)
-        var producer: KafkaProducer<String, String> = createProducer();
+        val producer: KafkaProducer<String, String> = createProducer()
 
         //shutdown hook
         Runtime.getRuntime().addShutdownHook(Thread {
@@ -69,7 +69,7 @@ object ManagerProducer: Runnable {
                 }
             }
             println("Mimir")
-            Thread.sleep((sleepingTime * 1000).toLong());
+            Thread.sleep((sleepingTime * 1000).toLong())
         }
     }
 

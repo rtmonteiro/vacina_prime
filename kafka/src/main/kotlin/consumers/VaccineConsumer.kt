@@ -158,8 +158,8 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
                 println("Producer -> VaccineConsumer de id: " + this.consumerInfo!!.id)
                 println(
                     """Metadados recebidos
-                                         Topic ${recordMetadata.topic()}
-                                         Partition: ${recordMetadata.partition()}
+                                        Topic ${recordMetadata.topic()}
+                                        Partition: ${recordMetadata.partition()}
                                         Offset: ${recordMetadata.offset()}
                                         Timestamp: ${recordMetadata.timestamp()}"""
                 )

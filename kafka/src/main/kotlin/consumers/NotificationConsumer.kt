@@ -42,9 +42,8 @@ class NotificationConsumer: Runnable {
             for (record in records) {
                 val notification: Notification = Json.decodeFromString(record.value())
                 when (notification.notificationType) {
-                    NotificationType.DISCARD -> print("Descarte, Descarte imediatamiente!")
-                    NotificationType.WARN -> print("Por sua conta em risco")
-                    else -> println("WTF")
+                    NotificationType.DISCARD -> println("Descarte, Descarte imediatamiente!")
+                    NotificationType.WARN -> println("Por sua conta em risco")
                 }
             }
         }
