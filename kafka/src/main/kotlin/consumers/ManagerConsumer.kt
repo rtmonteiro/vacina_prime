@@ -33,7 +33,6 @@ class ManagerConsumer: Runnable {
         while (true) {
             val records = consumer.poll(Duration.ofMillis(100))
             for (record in records) {
-                val managerId = record.key()
                 analyseManagerInfo(record)
             }
         }

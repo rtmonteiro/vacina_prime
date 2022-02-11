@@ -48,13 +48,13 @@ object NotificationConsumer: Runnable {
                     NotificationType.DISCARD -> {
                         for (managerInfo in notification.managersToNotificate) {
                             println("[NotificationConsumer] DISCARD ${notification.message}")
-                            twilioApi.sendMessage(managerInfo.phone, notification.message)
+//                            twilioApi.sendMessage(managerInfo.phone, notification.message)
                         }
                     }
                     NotificationType.WARN -> {
                         for (managerInfo in notification.managersToNotificate) {
                             println("[NotificationConsumer] WARN Manager ${managerInfo.name}: ${notification.message}")
-                            twilioApi.sendMessage(managerInfo.phone, notification.message)
+//                            twilioApi.sendMessage(managerInfo.phone, notification.message)
                         }
                     }
                     NotificationType.CAUTION -> {
