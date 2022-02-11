@@ -6,6 +6,13 @@ Gerenciador de validade e qualidade de Vacinas contra Covid19
 
 É necessário ter instalado `Kotlin 1.6.10`, além do `Java 11` instalados. Em geral, apenas ao importar o projeto no IntelliJ, todas as configurações necessárias serão sugeridas. Além disso, foi utilizado o `gradle` no projeto
 
+Primeiramente o Kafka e o zookeeper devem estar rodando, utilizando os seguintes comandos, variando de como é a instalação do Kafka em seu sistema:
+
+```sh
+  kafka-server-start ~/kafka/config/server.properties
+  zookeeper-server-start ~/kafka/config/zookeeper.properties
+```
+
 ## Utilizando o IntelliJ
 
 - O projeto possui já diretamente configurações prontos para execução do programa, basta importá-lo no IntelliJ.
