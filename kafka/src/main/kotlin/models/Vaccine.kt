@@ -26,4 +26,15 @@ class Vaccine {
         return false
     }
 
+    fun checkIfTemperatureIsNearOutOfBounds(temperature: Double): Boolean {
+        val tolerance = 1
+        if(temperature < minTemperature + tolerance && temperature > minTemperature) {
+            return true
+        }
+        if (temperature > maxTemperature - tolerance && temperature < maxTemperature) {
+            return true
+        }
+        return false
+    }
+
 }

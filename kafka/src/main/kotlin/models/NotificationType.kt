@@ -2,5 +2,6 @@ package models
 
 enum class NotificationType {
     DISCARD,
-    WARN
+    WARN,
+    CAUTION
 }

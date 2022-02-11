@@ -1,15 +1,10 @@
 package consumers
 
-import models.TemperatureConsumerInfo
-import models.TemperatureInfo
-import models.TemperatureProducerInfo
 import br.lenkeryan.kafka.producers.VaccineProducer
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import models.Notification
-import models.NotificationType
-import models.ProgramData
+import models.*
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.KafkaConsumer
@@ -21,6 +16,7 @@ import org.apache.kafka.common.serialization.StringSerializer
 import utils.Constants
 import java.time.Duration
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
@@ -65,33 +61,40 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
             var notification: Notification? = null
 
             freezer.vaccines!!.forEachIndexed { index, vaccine ->
-                val isTemperatureOutOfBounds = vaccine.checkIfTemperatureIsOutOfBounds(info.value)
+                    val isTemperatureOutOfBounds = vaccine.checkIfTemperatureIsOutOfBounds(info.value)
 
-                if(isTemperatureOutOfBounds) {
-                    // Temperatura fora do limite desejado
-                    // Fora por quanto tempo??
-                    if (vaccine.lastTimeOutOfBounds.compareTo(0.0) != 0) {
-                        val timeDifference = now - vaccine.lastTimeOutOfBounds
-                        if (timeDifference >= vaccine.maxDuration * 1000 * 3600) {
-                            // Descarte
-                            notification = Notification(
-                                type = NotificationType.DISCARD,
-                                message ="Descarte a vacina ${vaccine.brand} da câmara de vacinas de id ${freezer.id} do hospital ${freezer.hospital}")
-                            this.sendNotification(notification!!, freezer)
-                            println("[VaccineConsumer] Criando notificação do tipo DISCARD de temperatura fora do limite por grande período de tempo!")
+                    if(isTemperatureOutOfBounds) {
+                        // Temperatura fora do limite desejado
+                        // Fora por quanto tempo??
+                        if (vaccine.lastTimeOutOfBounds.compareTo(0.0) != 0) {
+                            val timeDifference = now - vaccine.lastTimeOutOfBounds
+                            if (timeDifference >= vaccine.maxDuration * 1000 * 3600) {
+                                // Descarte
+                                notification = Notification(
+                                    type = NotificationType.DISCARD,
+                                    message ="Descarte a vacina ${vaccine.brand} da câmara de vacinas de id ${freezer.id} do hospital ${freezer.hospital}",
+                                    managers = ProgramData.managers.values.toList() as ArrayList<ManagerInfo>
+                                    )
+                                this.sendNotification(notification!!, freezer)
+                                println("[VaccineConsumer] Criando notificação do tipo DISCARD de temperatura fora do limite por grande período de tempo!")
+                            } else {
+                                // Avisar gestor mais próximo
+                                notification = sendWarnNotificationToNearestManager(info, freezer)
+                                willNotificateWarning = notification != null
+                            }
                         } else {
-                            // Avisar gestor mais próximo
-                            notification = sendWarnToNearestManager(info, freezer)
-                            willNotificateWarning = notification != null
+                            freezer.vaccines!![index].lastTimeOutOfBounds = now
                         }
                     } else {
-                        freezer.vaccines!![index].lastTimeOutOfBounds = now
-                        notification = sendWarnToNearestManager(info, freezer)
-                        willNotificateWarning = notification != null
-                    }
-                } else {
-                    // Temperatura tudo ok
-                    freezer.vaccines!![index].lastTimeOutOfBounds = 0L
+                        val isTemperatureNearOutOfBound = vaccine.checkIfTemperatureIsNearOutOfBounds(info.value)
+                        if (isTemperatureNearOutOfBound) {
+                            notification = createCautionNotificationToAllManagers(info, freezer)
+                            willNotificateWarning = true
+                        } else {
+                            // Temperatura tudo ok
+                            freezer.vaccines!![index].lastTimeOutOfBounds = 0L
+                        }
+
                 }
             }
 
@@ -99,23 +102,35 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
                 willNotificateWarning = false
                 this.sendNotification(notification!!, freezer)
 //                println("[VaccineConsumer] Avisando manager mais proximo(${notification!!.managerToNotificate!!.name}) no telefone ${notification!!.managerToNotificate!!.phone}")
-                println("[VaccineConsumer] Criando notificação do tipo WARN de temperatura fora dos limites")
+                if (notification?.notificationType == NotificationType.WARN) {
+                    println("[VaccineConsumer] Criando notificação do tipo WARN de temperatura fora dos limites")
+                } else {
+                    println("[VaccineConsumer] Criando notificação do tipo CAUTION de temperatura fora dos limites")
+                }
                 notification = null
             }
         }
     }
 
-    private fun sendWarnToNearestManager(info: TemperatureInfo, freezer: TemperatureProducerInfo): Notification? {
+    private fun sendWarnNotificationToNearestManager(info: TemperatureInfo, freezer: TemperatureProducerInfo): Notification? {
         val nearestManager = info.actualCoordinate?.let { ProgramData.getNearestManager(it) }
         if(nearestManager == null) {
             println("[VaccineConsumer] Não existe um Manager próximo conhecido! não foi possível criar uma notificação")
         } else {
             return Notification(
                 type = NotificationType.WARN,
-                message = "Atenção! A câmara de vacina de id ${freezer.id} do hospital ${freezer.hospital} está com temperaturas fora do limite, por favor verifique",
+                message = "Atenção ${nearestManager.name}! A câmara de vacina de id ${freezer.id} do hospital ${freezer.hospital} está com temperaturas fora do limite, por favor verifique",
                 manager = nearestManager)
         }
         return null
+    }
+
+    private fun createCautionNotificationToAllManagers(info: TemperatureInfo, freezer: TemperatureProducerInfo): Notification? {
+        return Notification(
+            type = NotificationType.CAUTION,
+            message = "Atenção! A câmara de vacina de id ${freezer.id} do hospital ${freezer.hospital} está com temperaturas próximas do limite",
+            managers = ProgramData.managers.values.toList() as ArrayList<ManagerInfo>
+            )
     }
 
     private fun createConsumer(): KafkaConsumer<String, String> {

@@ -19,7 +19,7 @@ object ManagerProducer: Runnable {
     var managerInfo: ManagerInfo? = null
     private var topicManager = TopicManager()
     private var jsonReader = JsonReader()
-    private val sleepingTime = 10.0 // Time in seconds
+    private val sleepingTime = 30.0 // Time in seconds
     val managersTopic = Constants.managersTopic
 
     @JvmStatic

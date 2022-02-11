@@ -18,7 +18,7 @@
       "volume": "2",
       "maxTemperature": 8,
       "minTemperature": 2,
-      "maxDuration": 0.5
+      "maxDuration": 0.1
     }
   ]
 }

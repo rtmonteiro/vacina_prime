@@ -1,5 +1,6 @@
 package consumers
 
+import br.lenkeryan.kafka.utils.TwilioApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import models.Notification
@@ -14,6 +15,7 @@ import java.util.*
 object NotificationConsumer: Runnable {
     private val bootstrapServer = "localhost:9092"
     private val topic = Constants.notificationsTopic
+    private val twilioApi = TwilioApi()
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -43,8 +45,23 @@ object NotificationConsumer: Runnable {
             for (record in records) {
                 val notification: Notification = Json.decodeFromString(record.value())
                 when (notification.notificationType) {
-                    NotificationType.DISCARD -> println("[NotificationConsumer] ${notification.message}")
-                    NotificationType.WARN -> println("[NotificationConsumer] ${notification.message}")
+                    NotificationType.DISCARD -> {
+                        for (managerInfo in notification.managersToNotificate) {
+                            println("[NotificationConsumer] DISCARD ${notification.message}")
+                            twilioApi.sendMessage(managerInfo.phone, notification.message)
+                        }
+                    }
+                    NotificationType.WARN -> {
+                        for (managerInfo in notification.managersToNotificate) {
+                            println("[NotificationConsumer] WARN Manager ${managerInfo.name}: ${notification.message}")
+                            twilioApi.sendMessage(managerInfo.phone, notification.message)
+                        }
+                    }
+                    NotificationType.CAUTION -> {
+                        for (managerInfo in notification.managersToNotificate) {
+                            println("[NotificationConsumer] CAUTION Manager ${managerInfo.name}: ${notification.message}")
+                        }
+                    }
                 }
             }
         }
