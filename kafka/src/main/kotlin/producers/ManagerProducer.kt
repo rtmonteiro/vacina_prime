@@ -1,47 +1,44 @@
-package br.lenkeryan.kafka.producers
+package producers
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import br.lenkeryan.kafka.models.Coordinate
-import br.lenkeryan.kafka.models.ManagerInfo
-import br.lenkeryan.kafka.models.TemperatureInfo
-import br.lenkeryan.kafka.models.TemperatureProducerInfo
+import models.ManagerInfo
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.StringSerializer
 import br.lenkeryan.kafka.utils.JsonReader
-import br.lenkeryan.kafka.utils.TopicCreator
-import java.lang.Error
+import br.lenkeryan.kafka.utils.TopicManager
+import models.ManagerCoordinates
+import utils.Constants
 import java.util.*
+import kotlin.Error
 import kotlin.random.Random
 
 object ManagerProducer: Runnable {
-    private var managerInfo: ManagerInfo? = null
-    private var topicCreator = TopicCreator()
+    var managerInfo: ManagerInfo? = null
+    private var topicManager = TopicManager()
     private var jsonReader = JsonReader()
-    private val sleepingTime = 10.0 // Time in seconds
-    const val managersTopic = "managers-coordinates"
-    const val managersKey = "manager"
+    private val sleepingTime = 30.0 // Time in seconds
+    val managersTopic = Constants.managersTopic
 
     @JvmStatic
     fun main(args: Array<String>) {
         try {
             val filename = args[0]
-            var data = jsonReader.readManagerJsonInfo(filename)
-            managerInfo = data[0]
+            val data = jsonReader.readManagerJsonInfo(filename)
+            managerInfo = data
         } catch (err: Error) {
             println(err.localizedMessage)
         }
+        run()
 
-        run();
     }
 
-    public override fun run() {
+    override fun run() {
 
-        topicCreator.deleteTopic(managersTopic)
         //cria produtor com as devidas propriedades (SerDes customizado)
-        var producer: KafkaProducer<String, String> = createProducer();
+        val producer: KafkaProducer<String, String> = createProducer()
 
         //shutdown hook
         Runtime.getRuntime().addShutdownHook(Thread {
@@ -49,14 +46,13 @@ object ManagerProducer: Runnable {
             producer.close()
         })
         while (true) {
-//            var temperature: Temperature = Temperature(Random.nextDouble())
             if (managerInfo == null) {
                 return
             }
 
             val info = getManagerCoordinates()
             val data = Json.encodeToString(info)
-            val record = ProducerRecord<String, String>(managersTopic, managersKey, data)
+            val record = ProducerRecord<String, String>(managersTopic, managerInfo!!.id, data)
             //enviar Temperatura serializada para Kafka
             producer.send(record) { recordMetadata, e -> //executes a record if success or exception is thrown
                 if (e == null) {
@@ -72,8 +68,7 @@ object ManagerProducer: Runnable {
                     println(e.localizedMessage)
                 }
             }
-            println("Mimir")
-            Thread.sleep((sleepingTime * 1000).toLong());
+            Thread.sleep((sleepingTime * 1000).toLong())
         }
     }
 
@@ -86,16 +81,15 @@ object ManagerProducer: Runnable {
         prop.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
         prop.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
 
-        topicCreator.createTopic(managersTopic, 20)
+        topicManager.createTopic(managersTopic, Constants.managersNumberPartitions)
         return KafkaProducer<String, String>(prop)
     }
 
-    private fun getManagerCoordinates(): ManagerInfo {
-        val latitude = Random.nextDouble(-90.0, 90.0)
-        val longitude = Random.nextDouble(-180.0, 180.0)
-        val coord = Coordinate(latitude, longitude)
-        val info = managerInfo!!
-        info.coordinate = coord
-        return info
+    private fun getManagerCoordinates(): ManagerCoordinates {
+        if ( managerInfo == null ) { throw Error() }
+        val latitude = Random.nextDouble(-0.001, 0.001) + managerInfo!!.initialCoordinate.lat
+        val longitude = Random.nextDouble(-0.001, 0.001) + managerInfo!!.initialCoordinate.lon
+        return ManagerCoordinates(latitude, longitude, managerInfo!!)
     }
+
 }

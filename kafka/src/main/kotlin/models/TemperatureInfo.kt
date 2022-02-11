@@ -1,4 +1,4 @@
-package br.lenkeryan.kafka.models
+package models
 
 import kotlinx.serialization.Serializable
 
@@ -8,7 +8,7 @@ class TemperatureInfo {
     var producerInfo: TemperatureProducerInfo? = null
     var actualCoordinate: Coordinate? = null
 
-    constructor(value: Double, producerInfo : TemperatureProducerInfo, coordinate: Coordinate) {
+    constructor(value: Double, producerInfo: TemperatureProducerInfo, coordinate: Coordinate) {
         this.value = value
         this.producerInfo = producerInfo
         this.actualCoordinate = coordinate

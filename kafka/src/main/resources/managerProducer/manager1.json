@@ -1,0 +1,10 @@
+{
+  "id": "1",
+  "name": "Ryan Tavares",
+  "phone": "+5527981140407",
+  "email": "ryan@gmail.com",
+  "initialCoordinate": {
+    "lat": -20.302514,
+    "lon": -40.312088
+  }
+}

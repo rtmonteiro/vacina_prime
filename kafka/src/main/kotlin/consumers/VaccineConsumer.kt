@@ -1,167 +1,177 @@
-package br.lenkeryan.kafka.consumers
+package consumers
 
-import br.lenkeryan.kafka.models.*
+import br.lenkeryan.kafka.producers.VaccineProducer
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import models.*
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.KafkaConsumer
+import org.apache.kafka.clients.producer.KafkaProducer
+import org.apache.kafka.clients.producer.ProducerConfig
+import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.StringDeserializer
-import br.lenkeryan.kafka.producers.ManagerProducer
-import br.lenkeryan.kafka.producers.VaccineProducer
-import br.lenkeryan.kafka.producers.VaccineProducer.jsonReader
-import br.lenkeryan.kafka.utils.TwilioApi
+import org.apache.kafka.common.serialization.StringSerializer
+import utils.Constants
 import java.time.Duration
 import java.util.*
-import kotlin.math.sqrt
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.atan2
+import kotlin.collections.ArrayList
 
 
-object VaccineConsumer: Runnable {
-    var consumerInfo: TemperatureConsumerInfo? = null
-    var knownFreezersMap: HashMap<String, TemperatureProducerInfo> = hashMapOf()
-    var knownManagers: HashMap<String, ManagerInfo> = hashMapOf()
-    private val twilioApi = TwilioApi()
+class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
+    private var consumerInfo: TemperatureConsumerInfo? = consumerInfo
+    private val bootstrapServer = Constants.bootstrapServer
+    private var notificationProducer = createNotificationProducer() // Produtor das notificações
 
-    @JvmStatic
-    fun main(args: Array<String>) {
-        try {
-            val filename = args[0]
-            var data = jsonReader.readConsumerJsonInfo(filename)
-            consumerInfo = data[0]
-        } catch (err: Error) {
-            println(err.localizedMessage)
-        }
-        run();
 
-    }
+    override fun run() {
+        // Cria o consumidor das vacinas
+        val consumer = createConsumer()
 
-    public override fun run() {
-        val BootstrapServer = "localhost:9092"
-        val Topic = consumerInfo!!.hospital
-        val prop = Properties()
+        //shutdown hook
+        Runtime.getRuntime().addShutdownHook(Thread {
+            println("[VaccineConsumer] fechando aplicação... ")
+            this.notificationProducer.close()
+        })
 
-        prop.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BootstrapServer)
-        prop.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer::class.java.name)
-        prop.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer::class.java.name)
-        prop.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
-        prop.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "hospital-santa-paula")
-
-        // Criar um Consumidor
-        val consumer = KafkaConsumer<String, String>(prop)
-        consumer.subscribe(listOf(Topic, ManagerProducer.managersTopic))
         while (true) {
             val records = consumer.poll(Duration.ofMillis(100))
             for (record in records) {
-                if (record.key() == VaccineProducer.vaccineProducerKey) {
-                    analyseTemperatureInfo(record)
-                } else if (record.key() == ManagerProducer.managersKey) {
-                    analyseManagerInfo(record)
-                }
+                analyseTemperatureInfo(record)
             }
         }
     }
 
     private fun analyseTemperatureInfo(record: ConsumerRecord<String, String>) {
+        val knowFreezers = ProgramData.knownFreezersMap
         val info: TemperatureInfo = Json.decodeFromString(record.value())
+        println("[VaccineConsumer] Temperatura recebida da câmara de vacinas id ${info.producerInfo!!.id}: ${info.value}")
+
         if (info.producerInfo != null
             && info.producerInfo!!.vaccines != null) {
             // Checa primeiro se esta camara de vacinas já está registrada
-            if(!knownFreezersMap.contains(info.producerInfo!!.id))
-                knownFreezersMap[info.producerInfo!!.id] = info.producerInfo!!
+            val contains = ProgramData.returnIfFreezerExists(info.producerInfo!!.id)
+            if(!contains)
+                knowFreezers[info.producerInfo!!.id] = info.producerInfo!!
 
             val now = record.timestamp()
-            println("Timestamp de envio: $now")
-            knownFreezersMap[info.producerInfo!!.id]?.vaccines!!.forEachIndexed { index, vaccine ->
-                val isTemperatureOutOfBounds = vaccine.checkIfTemperatureIsOutOfBounds(info.value)
+            val freezer = knowFreezers[info.producerInfo!!.id] ?: return
+            var willNotificateWarning = false
+            var notification: Notification? = null
 
-                if(isTemperatureOutOfBounds) {
-                    // Temperatura fora do limite desejado
-                    // Fora por quanto tempo??
-                    println("Temperatura fora dos limites para uma vacina! valor: ${info.value}")
-                    val zero: Long = 0
-                    if (vaccine.lastTimeOutOfBounds != zero) {
-                        val timeDifference = now - vaccine.lastTimeOutOfBounds
-                        if (timeDifference >= vaccine.maxDuration * 1000 * 3600) {
-                            // Descarte
-                            twilioApi.sendMessage("+5527999405527", "Descarte a vacina")
-                            println("Descarte a vacina!")
-                        } else {
-                            // Avisar gestor mais próximo
-                            val nearestManager = info.actualCoordinate?.let { getNearestManager(it) }
-                            if(nearestManager == null) {
-                                println("Não existe um Manager próximo conhecido!")
+            freezer.vaccines!!.forEachIndexed { index, vaccine ->
+                    val isTemperatureOutOfBounds = vaccine.checkIfTemperatureIsOutOfBounds(info.value)
+
+                    if(isTemperatureOutOfBounds) {
+                        // Temperatura fora do limite desejado
+                        // Fora por quanto tempo??
+                        if (vaccine.lastTimeOutOfBounds.compareTo(0.0) != 0) {
+                            val timeDifference = now - vaccine.lastTimeOutOfBounds
+                            if (timeDifference >= vaccine.maxDuration * 1000 * 3600) {
+                                // Descarte
+                                notification = Notification(
+                                    type = NotificationType.DISCARD,
+                                    message ="Descarte a vacina ${vaccine.brand} da câmara de vacinas de id ${freezer.id} do hospital ${freezer.hospital}",
+                                    managers = ProgramData.managers.values.toList() as ArrayList<ManagerInfo>
+                                    )
+                                this.sendNotification(notification!!, freezer)
+                                println("[VaccineConsumer] Criando notificação do tipo DISCARD de temperatura fora do limite por grande período de tempo!")
                             } else {
-                                twilioApi.sendMessage(nearestManager.phone, "Meu amigo(a) ${nearestManager.name}, a vacina ta dando ruim lá")
-                                println("Avisando manager mais proximo(${nearestManager.name}) no telefone ${nearestManager.phone}")
+                                // Avisar gestor mais próximo
+                                notification = sendWarnNotificationToNearestManager(info, freezer)
+                                willNotificateWarning = notification != null
                             }
+                        } else {
+                            freezer.vaccines!![index].lastTimeOutOfBounds = now
                         }
                     } else {
-                        knownFreezersMap[info.producerInfo!!.id]
-                            ?.vaccines!![index].lastTimeOutOfBounds = now
-                    }
+                        val isTemperatureNearOutOfBound = vaccine.checkIfTemperatureIsNearOutOfBounds(info.value)
+                        if (isTemperatureNearOutOfBound) {
+                            notification = createCautionNotificationToAllManagers(info, freezer)
+                            willNotificateWarning = true
+                        } else {
+                            // Temperatura tudo ok
+                            freezer.vaccines!![index].lastTimeOutOfBounds = 0L
+                        }
+
+                }
+            }
+
+            if (willNotificateWarning) {
+                willNotificateWarning = false
+                this.sendNotification(notification!!, freezer)
+//                println("[VaccineConsumer] Avisando manager mais proximo(${notification!!.managerToNotificate!!.name}) no telefone ${notification!!.managerToNotificate!!.phone}")
+                if (notification?.notificationType == NotificationType.WARN) {
+                    println("[VaccineConsumer] Criando notificação do tipo WARN de temperatura fora dos limites")
                 } else {
-                    // Temperatura tudo ok
-                    knownFreezersMap[info.producerInfo!!.id]
-                        ?.vaccines!![index].lastTimeOutOfBounds = 0L
+                    println("[VaccineConsumer] Criando notificação do tipo CAUTION de temperatura fora dos limites")
                 }
+                notification = null
             }
         }
     }
 
-    private fun analyseManagerInfo(record: ConsumerRecord<String, String>) {
-        val info: ManagerInfo = Json.decodeFromString(record.value())
-        val managerExists = knownManagers.contains(info.id)
-        if(!managerExists) {
-            println("Novo manager com nome ${info.name} registrado no consumidor.")
-            knownManagers[info.id] = info
+    private fun sendWarnNotificationToNearestManager(info: TemperatureInfo, freezer: TemperatureProducerInfo): Notification? {
+        val nearestManager = info.actualCoordinate?.let { ProgramData.getNearestManager(it) }
+        if(nearestManager == null) {
+            println("[VaccineConsumer] Não existe um Manager próximo conhecido! não foi possível criar uma notificação")
         } else {
-            val actualManager = knownManagers[info.id]
-            if (actualManager != null) {
-                actualManager.coordinate = info.coordinate // Atualizando a coordenada do manager
-            }
+            return Notification(
+                type = NotificationType.WARN,
+                message = "Atenção ${nearestManager.name}! A câmara de vacina de id ${freezer.id} do hospital ${freezer.hospital} está com temperaturas fora do limite, por favor verifique",
+                manager = nearestManager)
         }
+        return null
     }
 
-    private fun getNearestManager(coordinate: Coordinate): ManagerInfo? {
-        var nearestManager: ManagerInfo? = null
-        var nearestDistance: Double = 0.0
-        knownManagers.forEach { manager ->
-            if (nearestManager == null) {
-                nearestManager = manager.value
-                nearestDistance = nearestManager!!.coordinate?.let { calculateDistance(coordinate, it) }!!
+    private fun createCautionNotificationToAllManagers(info: TemperatureInfo, freezer: TemperatureProducerInfo): Notification? {
+        return Notification(
+            type = NotificationType.CAUTION,
+            message = "Atenção! A câmara de vacina de id ${freezer.id} do hospital ${freezer.hospital} está com temperaturas próximas do limite",
+            managers = ProgramData.managers.values.toList() as ArrayList<ManagerInfo>
+            )
+    }
+
+    private fun createConsumer(): KafkaConsumer<String, String> {
+        val topic = consumerInfo!!.hospital
+        val prop = Properties()
+        prop.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer)
+        prop.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer::class.java.name)
+        prop.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer::class.java.name)
+        prop.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
+        prop.setProperty(ConsumerConfig.GROUP_ID_CONFIG, topic)
+
+        // Criar um Consumidor
+        val consumer = KafkaConsumer<String, String>(prop)
+        consumer.subscribe(listOf(topic))
+        return consumer
+    }
+
+    private fun createNotificationProducer(): KafkaProducer<String, String> {
+        val prop = Properties()
+        prop.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer)
+        prop.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
+        prop.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
+
+        VaccineProducer.topicManager.createTopic(Constants.notificationsTopic, Constants.notificationsNumPartitions)
+        return KafkaProducer<String, String>(prop)
+    }
+
+    private fun sendNotification(notification: Notification, freezer: TemperatureProducerInfo) {
+        val record = ProducerRecord(Constants.notificationsTopic, freezer.hospital, Json.encodeToString(notification) )
+        notificationProducer.send(record) { recordMetadata, e -> //executes a record if success or exception is thrown
+            if (e == null) {
+                println(
+                    """[VaccineConsumer SendNotification] Metadados recebidos
+                                        Topic ${recordMetadata.topic()}
+                                        Partition: ${recordMetadata.partition()}
+                                        Offset: ${recordMetadata.offset()}
+                                        Timestamp: ${recordMetadata.timestamp()}"""
+                )
             } else {
-                // Corrigir para distancia entre dois pontos
-                val distance = nearestManager!!.coordinate?.let { calculateDistance(coordinate, it) }
-
-                if (distance != null) {
-                    if (distance < nearestDistance) {
-                        nearestManager = manager.value
-                    }
-                }
+                println(e.localizedMessage)
             }
         }
-
-        return nearestManager
-    }
-
-    private fun calculateDistance(coordinate1: Coordinate, coordinate2: Coordinate): Double {
-        val earthRadius = 6371e3 //raio da terra em metros
-
-        val sigma1: Double = coordinate1.lat * Math.PI / 180 // φ, λ in radians
-
-        val sigma2: Double = coordinate2.lat * Math.PI / 180
-        val deltaSigma: Double = (coordinate2.lat - coordinate1.lat) * Math.PI / 180
-        val deltaLambda: Double = (coordinate2.lon - coordinate1.lon) * Math.PI / 180
-
-        val a =sin(deltaSigma / 2) *sin(deltaSigma / 2) +
-               cos(sigma1) * cos(sigma2) *
-               sin(deltaLambda / 2) *sin(deltaLambda / 2)
-        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-
-        return earthRadius * c
-
     }
 }

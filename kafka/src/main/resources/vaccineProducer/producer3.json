@@ -1,0 +1,25 @@
+{
+  "id": "3",
+  "hospital": "hospital-santa-paula",
+  "initialCoordinate": {
+    "lat": -20.25512,
+    "lon": -40.2722854
+  },
+  "vaccines": [
+    {
+      "brand": "Janssen",
+      "volume": "1",
+      "maxTemperature": 8,
+      "minTemperature": 2,
+      "maxDuration": 12
+    },
+    {
+      "brand": "Astrazeneca",
+      "volume": "1",
+      "maxTemperature": 8,
+      "minTemperature": 2,
+      "maxDuration": 12
+    }
+  ]
+}
+

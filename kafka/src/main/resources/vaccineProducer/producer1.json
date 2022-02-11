@@ -1,0 +1,25 @@
+{
+  "id": "1",
+  "hospital": "hospital-santa-paula",
+  "initialCoordinate": {
+    "lat": -20.25512,
+    "lon": -40.2722854
+  },
+  "vaccines": [
+    {
+      "brand": "Coronavac",
+      "volume": "1",
+      "maxTemperature": 8,
+      "minTemperature": 2,
+      "maxDuration": 0.5
+    },
+    {
+      "brand": "Pfizer",
+      "volume": "2",
+      "maxTemperature": 8,
+      "minTemperature": 2,
+      "maxDuration": 0.1
+    }
+  ]
+}
+

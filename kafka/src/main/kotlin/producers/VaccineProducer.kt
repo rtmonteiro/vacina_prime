@@ -1,16 +1,17 @@
 package br.lenkeryan.kafka.producers
 
-import br.lenkeryan.kafka.utils.TopicCreator
+import br.lenkeryan.kafka.utils.TopicManager
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import br.lenkeryan.kafka.models.Coordinate
-import br.lenkeryan.kafka.models.TemperatureInfo
-import br.lenkeryan.kafka.models.TemperatureProducerInfo
+import models.Coordinate
+import models.TemperatureInfo
+import models.TemperatureProducerInfo
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.StringSerializer
 import br.lenkeryan.kafka.utils.JsonReader
+import utils.Constants
 import java.lang.Error
 import java.util.*
 import kotlin.random.Random
@@ -18,10 +19,10 @@ import kotlin.random.Random
 object VaccineProducer : Runnable {
 
     var producerInfo: TemperatureProducerInfo? = null
-    var topicCreator = TopicCreator()
+    var topicManager = TopicManager()
     var jsonReader = JsonReader()
-    private val sleepingTime = 2.0 // Time in seconds
-    const val vaccineProducerKey = "freezer"
+    var temperatureOutOfBounds = true
+    private val sleepingTime = 25.0 // Time in seconds
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -30,18 +31,24 @@ object VaccineProducer : Runnable {
             if (filename == null) {
                 println("Por favor informe o nome do arquivo")
             }
-            var data = jsonReader.readProducerJsonInfo(filename)
-            producerInfo = data[0]
+            val data = jsonReader.readProducerJsonInfo(filename)
+            producerInfo = data
+
+            temperatureOutOfBounds = args[1].toBoolean()
+            if (temperatureOutOfBounds) {
+                println("[VaccineProducer] Produzindo vacinas fora do limite de temperatura")
+            } else {
+                println("[VaccineProducer] Produzindo vacinas dentro do limite de temperatura")
+            }
         } catch (err: Error) {
             println(err.localizedMessage)
         }
-        run();
+        run()
     }
 
-    public override fun run() {
-        topicCreator.deleteTopic("hospital-santa-paula")
+    override fun run() {
         //cria produtor com as devidas propriedades (SerDes customizado)
-        var producer: KafkaProducer<String, String> = createProducer();
+        val producer: KafkaProducer<String, String> = createProducer()
 
         //shutdown hook
         Runtime.getRuntime().addShutdownHook(Thread {
@@ -50,12 +57,12 @@ object VaccineProducer : Runnable {
         })
         while (true) {
 //            var temperature: Temperature = Temperature(Random.nextDouble())
-            if (producerInfo == null) {
+            if (producerInfo == null ) {
                 return
             }
             val temperature = getTemperatureInfo()
             val data = Json.encodeToString(temperature)
-            val record = ProducerRecord<String, String>(producerInfo!!.hospital, vaccineProducerKey, data)
+            val record = ProducerRecord(producerInfo!!.hospital, producerInfo!!.id, data)
             //enviar Temperatura serializada para Kafka
             producer.send(record) { recordMetadata, e -> //executes a record if success or exception is thrown
                 if (e == null) {
@@ -71,8 +78,7 @@ object VaccineProducer : Runnable {
                     println(e.localizedMessage)
                 }
             }
-            println("Mimir")
-            Thread.sleep((sleepingTime * 1000).toLong());
+            Thread.sleep((sleepingTime * 1000).toLong())
         }
     }
 
@@ -86,16 +92,23 @@ object VaccineProducer : Runnable {
         prop.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
 
         val topicName: String = producerInfo!!.hospital
-        topicCreator.createTopic(topicName, 10)
+        topicManager.createTopic(topicName, Constants.vaccineNumberPartitions)
         return KafkaProducer<String, String>(prop)
     }
 
     private fun getTemperatureInfo(): TemperatureInfo {
-        val latitude = Random.nextDouble(-90.0, 90.0)
-        val longitude = Random.nextDouble(-180.0, 180.0)
+        val latitude = Random.nextDouble(-0.001, 0.001) + this.producerInfo!!.initialCoordinate.lat
+        val longitude = Random.nextDouble(-0.001, 0.001) + this.producerInfo!!.initialCoordinate.lon
         val coord = Coordinate(latitude, longitude)
-        val temp = Random.nextDouble() * 100
-        return  TemperatureInfo(temp, producerInfo!!, coord )
+        var temp = 0.0
+        if (temperatureOutOfBounds) {
+            val vaccine = this.producerInfo!!.vaccines?.get(0)!!
+            temp = Random.nextDouble(vaccine.maxTemperature, vaccine.maxTemperature + 10);
+        } else {
+            val vaccine = this.producerInfo!!.vaccines?.get(0)!!
+            temp = Random.nextDouble(vaccine.minTemperature , vaccine.maxTemperature);
+        }
+        return TemperatureInfo(temp, producerInfo!!, coord)
     }
 
 }

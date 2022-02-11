@@ -1,20 +1,26 @@
-package br.lenkeryan.kafka.models
+package models
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ManagerInfo(
-    val id: String,
-    val name: String,
-    val phone: String,
-    val email: String
-) {
-    var coordinate: Coordinate? = null
+class ManagerInfo{
+    lateinit var id: String
+    lateinit var name: String
+    lateinit var phone: String
+    lateinit var email: String
+    lateinit var initialCoordinate: Coordinate
 
-    constructor(id: String, name: String, phone: String, email: String, coordinate: Coordinate) : this(
-        id, name, phone, email
-    ) {
+    fun ManagerInfo() {} // Required for ORMlite
 
-        this.coordinate = coordinate
+    fun ManagerInfo(id: String, name: String, phone: String, email: String, initialCoordinate: Coordinate) {
+        this.id = id
+        this.name = name
+        this.phone = phone
+        this.email = email
+        this.initialCoordinate = initialCoordinate
     }
+
+
+
 }
+

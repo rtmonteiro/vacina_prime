@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a9e9d1e-8f69-42f1-b726-aa015d5051a5" name="Changes" comment="" />
+    <list default="true" id="1a9e9d1e-8f69-42f1-b726-aa015d5051a5" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/ManagerConsumer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/ManagerConsumer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/NotificationConsumer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/NotificationConsumer.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,12 +34,25 @@
         <task path="$PROJECT_DIR$/kafka">
           <activation />
         </task>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="api" type="f1a62948:ProjectNode" />
+                <item name="VaccinePrime" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="VaccinePrime" type="f1a62948:ProjectNode" />
+                <item name="api" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="VaccinePrime" type="f1a62948:ProjectNode" />
+                <item name="kafka" type="2d1252cf:ModuleNode" />
               </path>
             </expand>
             <select />
@@ -42,12 +65,31 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Script" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Matheus Lenke &lt;matheuslenke@gmail.com&gt;, ryan monteiro &lt;ryan.monteiro@aluno.ufes.br&gt;" />
+        <option value="Matheus Lenke &lt;matheuslenke@gmail.com&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="trying-sqlite" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -62,18 +104,26 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="codeWithMe.voiceChat.enabledByDefault" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -81,6 +131,9 @@
       <recent name="$PROJECT_DIR$/kafka/src/main/resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/kafka/src/main/resources/vaccineConsumer" />
+      <recent name="$PROJECT_DIR$/kafka/src/main/resources/managerProducer" />
+      <recent name="$PROJECT_DIR$/kafka/src/main/resources/vaccineProducer" />
       <recent name="$PROJECT_DIR$/kafka/src/main/kotlin" />
       <recent name="$PROJECT_DIR$" />
     </key>
@@ -90,34 +143,48 @@
       <command value="gradle build" />
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.Application">
-    <configuration name="VacinaPrime [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="build" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="ManagerProducer" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="br.lenkeryan.kafka.producers.ManagerProducer" />
+  <component name="RunManager" selected="Kotlin.VaccineProducer (hospital-santa-paula)">
+    <configuration name="Consumers Threads" type="JetRunConfigurationType" temporary="true">
+      <envs>
+        <env name="TWILIO_ACCOUNT_SID" value="AC6dc2272e85871ea848f1b39b9c81edba" />
+        <env name="TWILIO_AUTH_TOKEN" value="f65449db7e223623d22001a6d03bda3a" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="MainKt" />
       <module name="VaccinePrime.kafka.main" />
-      <option name="PROGRAM_PARAMETERS" value="managers.json" />
       <shortenClasspath name="NONE" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/kafka/src/main/resources" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ManagerProducer ( Matheus)" type="JetRunConfigurationType" singleton="false" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="producers.ManagerProducer" />
+      <module name="VaccinePrime.kafka.main" />
+      <option name="PROGRAM_PARAMETERS" value="managerProducer/manager2.json" />
+      <shortenClasspath name="NONE" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/kafka/src/main/resources" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ManagerProducer ( Ryan )" type="JetRunConfigurationType" singleton="false">
+      <option name="MAIN_CLASS_NAME" value="producers.ManagerProducer" />
+      <module name="VaccinePrime.kafka.main" />
+      <option name="PROGRAM_PARAMETERS" value="managerProducer/manager1.json" />
+      <shortenClasspath name="NONE" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/kafka/src/main/resources" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="NotificationConsumer" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <envs>
+        <env name="TWILIO_ACCOUNT_SID" value="AC6dc2272e85871ea848f1b39b9c81edba" />
+        <env name="TWILIO_AUTH_TOKEN" value="f65449db7e223623d22001a6d03bda3a" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="consumers.NotificationConsumer" />
+      <module name="VaccinePrime.kafka.main" />
+      <shortenClasspath name="NONE" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -127,23 +194,65 @@
         <env name="TWILIO_ACCOUNT_SID" value="AC6dc2272e85871ea848f1b39b9c81edba" />
         <env name="TWILIO_AUTH_TOKEN" value="f65449db7e223623d22001a6d03bda3a" />
       </envs>
-      <option name="MAIN_CLASS_NAME" value="br.lenkeryan.kafka.consumers.VaccineConsumer" />
+      <option name="MAIN_CLASS_NAME" value="consumers.VaccineConsumer" />
       <module name="VaccinePrime.kafka.main" />
-      <option name="PROGRAM_PARAMETERS" value="consumer.json" />
+      <option name="PROGRAM_PARAMETERS" value="vaccineConsumer/consumer1.json" />
       <shortenClasspath name="NONE" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/kafka/src/main/resources" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="VaccineProducer" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+    <configuration name="VaccineConsumer2 (hospital-vitoria-apart)" type="JetRunConfigurationType">
+      <envs>
+        <env name="TWILIO_ACCOUNT_SID" value="AC6dc2272e85871ea848f1b39b9c81edba" />
+        <env name="TWILIO_AUTH_TOKEN" value="f65449db7e223623d22001a6d03bda3a" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="br.lenkeryan.kafka.consumers.VaccineConsumer" />
+      <module name="VaccinePrime.kafka.main" />
+      <option name="PROGRAM_PARAMETERS" value="vaccineConsumer/consumer2.json" />
+      <shortenClasspath name="NONE" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/kafka/src/main/resources" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="VaccineProducer (hospital-santa-paula)" type="JetRunConfigurationType" singleton="false" temporary="true">
       <envs>
         <env name="TWILIO_ACCOUNT_SID" value="AC6dc2272e85871ea848f1b39b9c81edba" />
         <env name="TWILIO_AUTH_TOKEN" value="f65449db7e223623d22001a6d03bda3a" />
       </envs>
       <option name="MAIN_CLASS_NAME" value="br.lenkeryan.kafka.producers.VaccineProducer" />
       <module name="VaccinePrime.kafka.main" />
-      <option name="PROGRAM_PARAMETERS" value="producer1.json" />
+      <option name="PROGRAM_PARAMETERS" value="vaccineProducer/producer1.json true" />
+      <shortenClasspath name="NONE" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/kafka/src/main/resources" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="VaccineProducer2 (hospital-vitoria-apart)" type="JetRunConfigurationType" singleton="false">
+      <envs>
+        <env name="TWILIO_ACCOUNT_SID" value="AC6dc2272e85871ea848f1b39b9c81edba" />
+        <env name="TWILIO_AUTH_TOKEN" value="f65449db7e223623d22001a6d03bda3a" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="br.lenkeryan.kafka.producers.VaccineProducer" />
+      <module name="VaccinePrime.kafka.main" />
+      <option name="PROGRAM_PARAMETERS" value="vaccineProducer/producer2.json" />
+      <shortenClasspath name="NONE" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/kafka/src/main/resources" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="VaccineProducer3 (hospital-santa-paula)" type="JetRunConfigurationType" singleton="false">
+      <envs>
+        <env name="TWILIO_ACCOUNT_SID" value="AC6dc2272e85871ea848f1b39b9c81edba" />
+        <env name="TWILIO_AUTH_TOKEN" value="f65449db7e223623d22001a6d03bda3a" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="br.lenkeryan.kafka.producers.VaccineProducer" />
+      <module name="VaccinePrime.kafka.main" />
+      <option name="PROGRAM_PARAMETERS" value="vaccineProducer/producer3.json" />
       <shortenClasspath name="NONE" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/kafka/src/main/resources" />
       <method v="2">
@@ -159,17 +268,23 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Gradle.VacinaPrime [build]" />
+      <item itemvalue="Kotlin.VaccineProducer2 (hospital-vitoria-apart)" />
+      <item itemvalue="Kotlin.VaccineConsumer2 (hospital-vitoria-apart)" />
+      <item itemvalue="Kotlin.VaccineProducer3 (hospital-santa-paula)" />
+      <item itemvalue="Kotlin.ManagerProducer ( Ryan )" />
       <item itemvalue="Kotlin.VaccineConsumer" />
-      <item itemvalue="Kotlin.VaccineProducer" />
-      <item itemvalue="Kotlin.ManagerProducer" />
+      <item itemvalue="Kotlin.VaccineProducer (hospital-santa-paula)" />
+      <item itemvalue="Kotlin.ManagerProducer ( Matheus)" />
+      <item itemvalue="Kotlin.Consumers Threads" />
+      <item itemvalue="Kotlin.NotificationConsumer" />
       <item itemvalue="Spring Boot.Application" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Kotlin.VaccineProducer" />
-        <item itemvalue="Gradle.VacinaPrime [build]" />
-        <item itemvalue="Kotlin.ManagerProducer" />
+        <item itemvalue="Kotlin.VaccineProducer (hospital-santa-paula)" />
+        <item itemvalue="Kotlin.NotificationConsumer" />
+        <item itemvalue="Kotlin.Consumers Threads" />
+        <item itemvalue="Kotlin.ManagerProducer ( Matheus)" />
         <item itemvalue="Kotlin.VaccineConsumer" />
       </list>
     </recent_temporary>
@@ -190,7 +305,88 @@
       <workItem from="1643573646695" duration="729000" />
       <workItem from="1643574399583" duration="17000" />
       <workItem from="1643574432912" duration="697000" />
+      <workItem from="1643575634078" duration="1434000" />
+      <workItem from="1643888667480" duration="21451000" />
+      <workItem from="1643926194151" duration="8165000" />
+      <workItem from="1643977719308" duration="4209000" />
+      <workItem from="1644076488142" duration="4000" />
+      <workItem from="1644155741375" duration="18128000" />
+      <workItem from="1644450577842" duration="1463000" />
+      <workItem from="1644537200210" duration="9094000" />
+      <workItem from="1644578156331" duration="4996000" />
+      <workItem from="1644608467148" duration="660000" />
     </task>
+    <task id="LOCAL-00001" summary="Basic SQLite working">
+      <created>1643896887777</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1643896887777</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Funcionando na Main com SQLite">
+      <created>1643935839530</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1643935839530</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Funcionando cada processo separado pegando do json">
+      <created>1643937446071</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1643937446071</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Consertando produtor deletando tópico">
+      <created>1643980738149</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1643980738149</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Threads de consumidores">
+      <created>1644161462208</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1644161462208</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Funcionando o limite de tempo da vacina para descarte">
+      <created>1644162490570</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1644162490570</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Notifcation producer">
+      <created>1644172907382</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1644172907382</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Deixando mensagens dos consumers melhores">
+      <created>1644424523336</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1644424523337</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Removendo arquivos de build">
+      <created>1644424613600</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1644424613600</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Trabalho pronto">
+      <created>1644547689536</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1644547689536</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -201,10 +397,52 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/release/t1" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Basic SQLite working" />
+    <MESSAGE value="Funcionando na Main com SQLite" />
+    <MESSAGE value="Funcionando cada processo separado pegando do json" />
+    <MESSAGE value="Consertando produtor deletando tópico" />
+    <MESSAGE value="Threads de consumidores" />
+    <MESSAGE value="Funcionando o limite de tempo da vacina para descarte" />
+    <MESSAGE value="Notifcation producer" />
+    <MESSAGE value="Deixando mensagens dos consumers melhores" />
+    <MESSAGE value="Removendo arquivos de build" />
+    <MESSAGE value="Trabalho pronto" />
+    <option name="LAST_COMMIT_MESSAGE" value="Trabalho pronto" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/kafka/src/main/kotlin/utils/TwilioApi.kt</url>
+          <line>16</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="JetRunConfigurationType">
+        <watch expression="knowFreezers" language="kotlin" />
+        <watch expression="managers" language="kotlin" custom="import models.ProgramData.managers" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
