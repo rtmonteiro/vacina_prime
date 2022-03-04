@@ -22,7 +22,7 @@ object VaccineProducer : Runnable {
     var topicManager = TopicManager()
     var jsonReader = JsonReader()
     var temperatureOutOfBounds = true
-    private val sleepingTime = 25.0 // Time in seconds
+    private val sleepingTime = 5.0 // Time in seconds.
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -100,13 +100,13 @@ object VaccineProducer : Runnable {
         val latitude = Random.nextDouble(-0.001, 0.001) + this.producerInfo!!.initialCoordinate.lat
         val longitude = Random.nextDouble(-0.001, 0.001) + this.producerInfo!!.initialCoordinate.lon
         val coord = Coordinate(latitude, longitude)
-        var temp = 0.0
+        val temp: Double
         if (temperatureOutOfBounds) {
             val vaccine = this.producerInfo!!.vaccines?.get(0)!!
-            temp = Random.nextDouble(vaccine.maxTemperature, vaccine.maxTemperature + 10);
+            temp = Random.nextDouble(vaccine.maxTemperature, vaccine.maxTemperature + 10)
         } else {
             val vaccine = this.producerInfo!!.vaccines?.get(0)!!
-            temp = Random.nextDouble(vaccine.minTemperature , vaccine.maxTemperature);
+            temp = Random.nextDouble(vaccine.minTemperature , vaccine.maxTemperature)
         }
         return TemperatureInfo(temp, producerInfo!!, coord)
     }
