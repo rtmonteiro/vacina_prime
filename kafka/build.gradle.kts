@@ -26,6 +26,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:0.37.3")
     implementation("org.xerial:sqlite-jdbc:3.36.0.3")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
+    implementation("org.springframework.kafka:spring-kafka:2.7.11")
 }
 
 

@@ -1,6 +1,7 @@
 package models
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationStrategy
 
 @Serializable
 class Notification {

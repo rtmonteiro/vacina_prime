@@ -35,15 +35,15 @@ class ManagerConsumer: Runnable {
 
         runManagerLocationConsumer()
 
-        // Criar um Consumidor
-        val consumer = KafkaConsumer<String, String>(prop)
-        consumer.subscribe(listOf(topic))
-        while (true) {
-            val records = consumer.poll(Duration.ofMillis(100))
-            for (record in records) {
-                analyseManagerInfo(record)
-            }
-        }
+//        // Criar um Consumidor
+//        val consumer = KafkaConsumer<String, String>(prop)
+//        consumer.subscribe(listOf(topic))
+//        while (true) {
+//            val records = consumer.poll(Duration.ofMillis(100))
+//            for (record in records) {
+//                analyseManagerInfo(record)
+//            }
+//        }
     }
 
     private fun runManagerLocationConsumer() {
@@ -51,6 +51,7 @@ class ManagerConsumer: Runnable {
 
         prop.setProperty(StreamsConfig.APPLICATION_ID_CONFIG, "manager-location")
         prop.setProperty(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer)
+        prop[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest";
         prop.setProperty(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().javaClass.name)
         prop.setProperty(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().javaClass.name)
 
@@ -62,6 +63,19 @@ class ManagerConsumer: Runnable {
             .mapValues { value -> Json.decodeFromString<ManagerCoordinates>(value) }
 
         locationsTable.toStream()
+            .mapValues { value ->
+                val managerExists = ProgramData.returnIfManagerExists(value.manager.id)
+                if(!managerExists) {
+                    println("[ManagerConsumer] Novo manager com nome ${value.manager.name} registrado no consumidor.")
+                    managers[value.manager.id] = value.manager
+                } else {
+                    val actualManager = managers[value.manager.id]
+                    if (actualManager != null) {
+                        actualManager.initialCoordinate = Coordinate(value.lat, value.lon)
+                    }
+                }
+                return@mapValues value
+            }
             .peek { _, value -> println("NAME: ${value.manager.name}\n\tLAT: ${value.lat}\n\tLON: ${value.lon}") }
 
         val streams = KafkaStreams(builder.build(), prop)

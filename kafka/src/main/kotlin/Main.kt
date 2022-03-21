@@ -12,8 +12,8 @@ fun main() {
 //    Thread(notificationsConsumer).start()
 
     // <--- Seção Managers --->
-    val managerConsumer = ManagerConsumer()
-    Thread(managerConsumer).start()
+//    val managerConsumer = ManagerConsumer()
+//    Thread(managerConsumer).start()
 
 //    // <--- Seção Freezers --->
     val vaccineConsumers = ArrayList<VaccineConsumer>()

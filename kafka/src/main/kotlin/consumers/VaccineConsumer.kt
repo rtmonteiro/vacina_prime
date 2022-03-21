@@ -11,6 +11,7 @@ import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.StreamsConfig
+import org.apache.kafka.streams.kstream.KTable
 import utils.Constants
 import java.time.Duration
 import java.util.*
@@ -53,6 +54,8 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
 
         val vaccineTemperatures = builder.stream<String, String>("hospital-santa-paula")
 
+        val managersTable = runManagerLocationConsumer()
+
         vaccineTemperatures
             .mapValues { value -> Json.decodeFromString<TemperatureInfo>(value) }
             .peek { key: String, info: TemperatureInfo -> println("\tPEEK: $key: ${info.value}") }
@@ -66,7 +69,31 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
                             && vaccine.minTemperature <= info.value + Constants.tolerance } == true
             }
             .peek { _, info -> println("\tIS OUT OF BOUNDS: ${info.producerInfo?.id} = ${info.value}") }
+//            .mapValues { value ->
+//                value.temperatureInfo?.producerInfo
+//                if(value.temperatureInfo?.producerInfo != null) {
+//                    val notification = sendWarnNotificationToNearestManager(value.temperatureInfo!!, value.temperatureInfo?.producerInfo!!)
+//                    return@mapValues notification
+//                } else {
+//                    return@mapValues null
+//                }
+//            }
+//
+//            .filter { key: String, info: Notification? ->
+//                return@filter info != null
+//            }
+//            .peek {_, info -> println("Notification: ${info?.message}")}
+//            .mapValues { value ->
+//                return@mapValues Json.encodeToString(value)
+//            }
+//            .to(Constants.notificationsTopic) // Jogamos as notificações para o tópico de notificações
 
+//        val joined  = vaccineTemperatures.join(managersTable) { leftValue: TemperatureInfo, rightValue: ManagerCoordinates ->
+//            val managersAndTemperatures = ManagersAndTemperatures(leftValue, rightValue)
+//            return@join managersAndTemperatures
+//        }
+//        .peek {_, info -> println("Join funcional: ${info.temperatureInfo?.producerInfo?.hospital}, ${info.managerCoordinates.size}") }
+//
         val streams = KafkaStreams(builder.build(), prop)
 
         streams.cleanUp()
@@ -164,6 +191,33 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
 //            managers = ProgramData.managers.values.toList() as ArrayList<ManagerInfo>
 //            )
 //    }
+    private fun runManagerLocationConsumer(): KTable<String, ManagerCoordinates> {
+        val prop = Properties()
+
+        prop.setProperty(StreamsConfig.APPLICATION_ID_CONFIG, "manager-location")
+        prop.setProperty(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer)
+        prop[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest";
+        prop.setProperty(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().javaClass.name)
+        prop.setProperty(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().javaClass.name)
+
+        val builder = StreamsBuilder()
+
+        val managerLocations = builder.table<String, String>(Constants.managersTopic)
+
+        val locationsTable: KTable<String, ManagerCoordinates> = managerLocations
+            .mapValues { value -> Json.decodeFromString<ManagerCoordinates>(value) }
+
+        locationsTable.toStream()
+            .peek { _, value -> println("NAME: ${value.manager.name}\n\tLAT: ${value.lat}\n\tLON: ${value.lon}") }
+
+        val streams = KafkaStreams(builder.build(), prop)
+
+        streams.cleanUp()
+        streams.start()
+
+        Runtime.getRuntime().addShutdownHook(Thread(streams::close))
+        return locationsTable
+    }
 
     private fun createConsumer(): KafkaConsumer<String, String> {
         val topic = consumerInfo!!.hospital

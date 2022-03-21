@@ -3,11 +3,16 @@ package consumers
 import br.lenkeryan.kafka.utils.TwilioApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import models.Notification
-import models.NotificationType
+import models.*
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.KafkaConsumer
+import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.common.serialization.StringDeserializer
+import org.apache.kafka.streams.KafkaStreams
+import org.apache.kafka.streams.StreamsBuilder
+import org.apache.kafka.streams.StreamsConfig
+import org.apache.kafka.streams.kstream.KStream
+import org.apache.kafka.streams.kstream.KTable
 import utils.Constants
 import java.time.Duration
 import java.util.*
@@ -29,6 +34,38 @@ object NotificationConsumer: Runnable {
     }
 
     override fun run() {
+        runKafkaStreams()
+    }
+
+    private fun runKafkaStreams() {
+        val prop = Properties()
+
+        prop.setProperty(StreamsConfig.APPLICATION_ID_CONFIG, "notifications")
+        prop.setProperty(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer)
+        prop[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest";
+        prop.setProperty(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().javaClass.name)
+        prop.setProperty(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().javaClass.name)
+
+        val builder = StreamsBuilder()
+
+        val notifications = builder.stream<String, String>(Constants.notificationsTopic)
+
+        notifications
+            .filter { _:String, value: String? ->
+                return@filter value != null
+            }
+            .mapValues { value -> Json.decodeFromString<Notification>(value) }
+            .peek { _, value -> println("[Notification]: ${value.message}") }
+
+        val streams = KafkaStreams(builder.build(), prop)
+
+        streams.cleanUp()
+        streams.start()
+
+        Runtime.getRuntime().addShutdownHook(Thread(streams::close))
+    }
+
+    private fun runDefaultConsumer() {
         val prop = Properties()
 
         prop.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer)

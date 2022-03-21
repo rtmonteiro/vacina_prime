@@ -5,17 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1a9e9d1e-8f69-42f1-b726-aa015d5051a5" name="Changes" comment="Implementando KStream e KTable">
+      <change afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/models/ManagersAndTemperatures.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/Main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/ManagerConsumer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/ManagerConsumer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/NotificationConsumer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/NotificationConsumer.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/VaccineConsumer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/consumers/VaccineConsumer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/producers/VaccineProducer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/producers/VaccineProducer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/utils/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/utils/Constants.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka/src/main/kotlin/models/Notification.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kafka/src/main/kotlin/models/Notification.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +74,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Script" />
+        <option value="Class" />
         <option value="Kotlin Class" />
       </list>
     </option>
@@ -287,9 +295,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Kotlin.Consumers Threads" />
-        <item itemvalue="Kotlin.ManagerProducer ( Matheus)" />
         <item itemvalue="Kotlin.VaccineProducer (hospital-santa-paula)" />
         <item itemvalue="Kotlin.NotificationConsumer" />
+        <item itemvalue="Kotlin.ManagerProducer ( Matheus)" />
         <item itemvalue="Kotlin.VaccineConsumer" />
       </list>
     </recent_temporary>
@@ -320,6 +328,7 @@
       <workItem from="1644537200210" duration="9094000" />
       <workItem from="1644578156331" duration="4996000" />
       <workItem from="1644608467148" duration="660000" />
+      <workItem from="1647869860246" duration="8662000" />
     </task>
     <task id="LOCAL-00001" summary="Basic SQLite working">
       <created>1643896887777</created>
@@ -450,6 +459,10 @@
           <line>16</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="org.apache.kafka.streams.errors.TopologyException" package="org.apache.kafka.streams.errors" />
+          <option name="timeStamp" value="9" />
+        </breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
