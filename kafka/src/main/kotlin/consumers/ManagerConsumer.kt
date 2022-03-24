@@ -8,15 +8,16 @@ import models.ProgramData
 import models.ProgramData.managers
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.ConsumerRecord
-import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.StreamsConfig
+import org.apache.kafka.streams.kstream.Grouped
 import org.apache.kafka.streams.kstream.KTable
+import org.apache.kafka.streams.kstream.Materialized
+import org.apache.kafka.streams.kstream.ValueMapper
 import utils.Constants
-import java.time.Duration
 import java.util.*
 
 

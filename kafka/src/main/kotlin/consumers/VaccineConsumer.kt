@@ -1,6 +1,7 @@
 package consumers
 
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import models.*
 import org.apache.kafka.clients.consumer.ConsumerConfig
@@ -12,8 +13,10 @@ import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.StreamsConfig
 import org.apache.kafka.streams.kstream.KTable
+import org.apache.kafka.streams.kstream.ValueJoiner
 import utils.Constants
 import java.time.Duration
+import java.time.Instant
 import java.util.*
 
 
@@ -25,7 +28,7 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
 
     override fun run() {
         // Cria o consumidor das vacinas
-        val consumer = createConsumer()
+//        val consumer = createConsumer()
 
         runNotificationProducer()
 
@@ -35,12 +38,6 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
 //            this.notificationProducer.close()
         })
 
-        while (true) {
-            val records = consumer.poll(Duration.ofMillis(100))
-            for (record in records) {
-                analyseTemperatureInfo(record)
-            }
-        }
     }
 
     private fun runNotificationProducer() {
@@ -54,8 +51,6 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
 
         val vaccineTemperatures = builder.stream<String, String>("hospital-santa-paula")
 
-        val managersTable = runManagerLocationConsumer()
-
         vaccineTemperatures
             .mapValues { value -> Json.decodeFromString<TemperatureInfo>(value) }
             .peek { key: String, info: TemperatureInfo -> println("\tPEEK: $key: ${info.value}") }
@@ -63,43 +58,99 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
                 return@filter info.producerInfo != null
                         && info.producerInfo!!.vaccines != null
             }
+            // Filtrando para pegar temperaturas que estão fora dos limites
             .filterNot { _: String, info: TemperatureInfo ->
                 return@filterNot info.producerInfo?.vaccines?.all { vaccine ->
                     vaccine.maxTemperature >= info.value - Constants.tolerance
                             && vaccine.minTemperature <= info.value + Constants.tolerance } == true
             }
             .peek { _, info -> println("\tIS OUT OF BOUNDS: ${info.producerInfo?.id} = ${info.value}") }
-//            .mapValues { value ->
-//                value.temperatureInfo?.producerInfo
-//                if(value.temperatureInfo?.producerInfo != null) {
-//                    val notification = sendWarnNotificationToNearestManager(value.temperatureInfo!!, value.temperatureInfo?.producerInfo!!)
-//                    return@mapValues notification
-//                } else {
-//                    return@mapValues null
-//                }
-//            }
-//
-//            .filter { key: String, info: Notification? ->
-//                return@filter info != null
-//            }
-//            .peek {_, info -> println("Notification: ${info?.message}")}
-//            .mapValues { value ->
-//                return@mapValues Json.encodeToString(value)
-//            }
-//            .to(Constants.notificationsTopic) // Jogamos as notificações para o tópico de notificações
+            // Transformando informações de temperatura em notificações
+            .mapValues { value ->
 
-//        val joined  = vaccineTemperatures.join(managersTable) { leftValue: TemperatureInfo, rightValue: ManagerCoordinates ->
-//            val managersAndTemperatures = ManagersAndTemperatures(leftValue, rightValue)
-//            return@join managersAndTemperatures
-//        }
-//        .peek {_, info -> println("Join funcional: ${info.temperatureInfo?.producerInfo?.hospital}, ${info.managerCoordinates.size}") }
-//
+                val notification: Notification? = analyseNotificationToSend(value)
+                return@mapValues notification
+            }
+            // Filtrando notificações que não foram criadas
+            .filter { key: String, info: Notification? ->
+                return@filter info != null
+            }
+            .peek {_, info -> println("Notification: ${info?.message}")}
+            // Encoding dos dados
+            .mapValues { value ->
+                return@mapValues Json.encodeToString(value)
+            }
+            .to(Constants.notificationsTopic) // Jogamos as notificações para o tópico de notificações
+
         val streams = KafkaStreams(builder.build(), prop)
 
         streams.cleanUp()
         streams.start()
 
         Runtime.getRuntime().addShutdownHook(Thread(streams::close))
+    }
+
+    private fun analyseNotificationToSend(tempInfo: TemperatureInfo): Notification? {
+        val knowFreezers = ProgramData.knownFreezersMap
+        val contains = ProgramData.returnIfFreezerExists(tempInfo.producerInfo!!.id)
+        if(!contains)
+            knowFreezers[tempInfo.producerInfo!!.id] = tempInfo.producerInfo!!
+
+        val now = Instant.now().epochSecond
+        val freezer = knowFreezers[tempInfo.producerInfo!!.id] ?: return null
+        var willNotificateWarning = false
+        var notification: Notification? = null
+
+        freezer.vaccines!!.forEachIndexed { index, vaccine ->
+            val isTemperatureOutOfBounds = vaccine.checkIfTemperatureIsOutOfBounds(tempInfo.value)
+
+            if(isTemperatureOutOfBounds) {
+                // Temperatura fora do limite desejado
+                // Fora por quanto tempo??
+                if (vaccine.lastTimeOutOfBounds.compareTo(0.0) != 0) {
+                    val timeDifference = now - vaccine.lastTimeOutOfBounds
+                    if (timeDifference >= vaccine.maxDuration * 1000 * 3600) {
+                        // Descarte
+                        notification = Notification(
+                            type = NotificationType.DISCARD,
+                            message ="Descarte a vacina ${vaccine.brand} da câmara de vacinas de id ${freezer.id} do hospital ${freezer.hospital}",
+                            managers = ProgramData.managers.values.toList() as ArrayList<ManagerInfo>
+                        )
+//                                this.sendNotification(notification!!, freezer)
+                        println("[VaccineConsumer] Criando notificação do tipo DISCARD de temperatura fora do limite por grande período de tempo!")
+                    } else {
+                        // Avisar gestor mais próximo
+                        notification = sendWarnNotificationToNearestManager(tempInfo, freezer)
+                        willNotificateWarning = notification != null
+                    }
+                } else {
+                    freezer.vaccines!![index].lastTimeOutOfBounds = now
+                }
+            } else {
+                val isTemperatureNearOutOfBound = vaccine.checkIfTemperatureIsNearOutOfBounds(tempInfo.value)
+                if (isTemperatureNearOutOfBound) {
+//                            notification = createCautionNotificationToAllManagers(info, freezer)
+                    willNotificateWarning = true
+                } else {
+                    // Temperatura tudo ok
+                    freezer.vaccines!![index].lastTimeOutOfBounds = 0L
+                }
+
+            }
+
+            if (willNotificateWarning) {
+                willNotificateWarning = false
+//                this.sendNotification(notification!!, freezer)
+//                println("[VaccineConsumer] Avisando manager mais proximo(${notification!!.managerToNotificate!!.name}) no telefone ${notification!!.managerToNotificate!!.phone}")
+                if (notification?.notificationType == NotificationType.WARN) {
+                    println("[VaccineConsumer] Criando notificação do tipo WARN de temperatura fora dos limites")
+                } else {
+                    println("[VaccineConsumer] Criando notificação do tipo CAUTION de temperatura fora dos limites")
+                }
+                notification = null
+            }
+        }
+        return null
     }
 
     private fun analyseTemperatureInfo(record: ConsumerRecord<String, String>) {
@@ -184,13 +235,14 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
         return null
     }
 
-//    private fun createCautionNotificationToAllManagers(info: TemperatureInfo, freezer: TemperatureProducerInfo): Notification? {
-//        return Notification(
-//            type = NotificationType.CAUTION,
-//            message = "Atenção! A câmara de vacina de id ${freezer.id} do hospital ${freezer.hospital} está com temperaturas próximas do limite",
-//            managers = ProgramData.managers.values.toList() as ArrayList<ManagerInfo>
-//            )
-//    }
+    private fun createCautionNotificationToAllManagers(info: TemperatureInfo, freezer: TemperatureProducerInfo): Notification? {
+        return Notification(
+            type = NotificationType.CAUTION,
+            message = "Atenção! A câmara de vacina de id ${freezer.id} do hospital ${freezer.hospital} está com temperaturas próximas do limite",
+            managers = ProgramData.managers.values.toList() as ArrayList<ManagerInfo>
+            )
+    }
+
     private fun runManagerLocationConsumer(): KTable<String, ManagerCoordinates> {
         val prop = Properties()
 
@@ -219,20 +271,20 @@ class VaccineConsumer(consumerInfo: TemperatureConsumerInfo): Runnable {
         return locationsTable
     }
 
-    private fun createConsumer(): KafkaConsumer<String, String> {
-        val topic = consumerInfo!!.hospital
-        val prop = Properties()
-        prop.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer)
-        prop.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer::class.java.name)
-        prop.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer::class.java.name)
-        prop.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
-        prop.setProperty(ConsumerConfig.GROUP_ID_CONFIG, topic)
-
-        // Criar um Consumidor
-        val consumer = KafkaConsumer<String, String>(prop)
-        consumer.subscribe(listOf(topic))
-        return consumer
-    }
+//    private fun createConsumer(): KafkaConsumer<String, String> {
+//        val topic = consumerInfo!!.hospital
+//        val prop = Properties()
+//        prop.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer)
+//        prop.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer::class.java.name)
+//        prop.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer::class.java.name)
+//        prop.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
+//        prop.setProperty(ConsumerConfig.GROUP_ID_CONFIG, topic)
+//
+//        // Criar um Consumidor
+//        val consumer = KafkaConsumer<String, String>(prop)
+//        consumer.subscribe(listOf(topic))
+//        return consumer
+//    }
 
 //    private fun createNotificationProducer(): KafkaProducer<String, String> {
 //        val prop = Properties()
