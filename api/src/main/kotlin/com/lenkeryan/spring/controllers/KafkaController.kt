@@ -1,8 +1,12 @@
 package com.lenkeryan.spring.controllers
 
+import com.lenkeryan.spring.models.ManagerCoordinates
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.streams.KeyValue
 import org.apache.kafka.streams.StoreQueryParameters
+import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.state.KeyValueIterator
 import org.apache.kafka.streams.state.QueryableStoreTypes
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore
@@ -21,7 +25,7 @@ class KafkaController(
 
     @GetMapping
     fun all(): Any {
-        val managerCoordinates: MutableList<String> = ArrayList()
+        val managerCoordinates: MutableList<ManagerCoordinates> = ArrayList()
 
 //        val countStoreSupplier = Stores.keyValueStoreBuilder(
 //            Stores.persistentKeyValueStore("managers-coordinates"),
@@ -30,20 +34,24 @@ class KafkaController(
 //        )
 //        val countStore = countStoreSupplier.build()
 
-        val store: ReadOnlyKeyValueStore<String, String> = kafkaStreamsFactory
-            .kafkaStreams
-            .store<ReadOnlyKeyValueStore<String, String>>(
-                StoreQueryParameters.fromNameAndType(
-                    "managers",
-                    QueryableStoreTypes.keyValueStore()
-                )
-            )
-        val it: KeyValueIterator<String, String> = store.all()
-        it.forEachRemaining { kv: KeyValue<String?, String> ->
-            managerCoordinates.add(
-                kv.value
-            )
-        }
+//        val store: ReadOnlyKeyValueStore<String, String> = kafkaStreamsFactory
+//            .kafkaStreams
+//            .store<ReadOnlyKeyValueStore<String, String>>(
+//                StoreQueryParameters.fromNameAndType(
+//                    "managers",
+//                    QueryableStoreTypes.keyValueStore()
+//                )
+//            )
+//        val it: KeyValueIterator<String, String> = store.all()
+//        it.forEachRemaining { kv: KeyValue<String?, String> ->
+//            managerCoordinates.add(
+//                kv.value
+//            )
+//        }
+
+        StreamsBuilder().stream<String, String>("managers-coordinates")
+            .peek { _, v -> managerCoordinates.add(Json.decodeFromString(v))}
+
         return managerCoordinates
     }
 }
