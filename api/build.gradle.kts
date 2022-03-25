@@ -17,6 +17,7 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter:2.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("org.apache.kafka:kafka-streams")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
