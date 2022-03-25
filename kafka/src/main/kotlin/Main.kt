@@ -1,8 +1,7 @@
-import consumers.VaccineConsumer
-import br.lenkeryan.kafka.utils.JsonReader
-import consumers.ManagerConsumer
-import models.TemperatureConsumerInfo
-import consumers.NotificationConsumer
+import com.lenkeryan.kafka.utils.JsonReader
+import com.lenkeryan.kafka.consumers.ManagerConsumer
+import com.lenkeryan.kafka.consumers.VaccineConsumer
+import com.lenkeryan.kafka.models.TemperatureConsumerInfo
 
 fun main() {
     val jsonReader = JsonReader()
@@ -17,7 +16,7 @@ fun main() {
 
 //    // <--- Seção Freezers --->
     val vaccineConsumers = ArrayList<VaccineConsumer>()
-    val freezerConsumersData = jsonReader.readConsumerJsonList("vaccineConsumer/consumers.json")
+    val freezerConsumersData: ArrayList<TemperatureConsumerInfo> = jsonReader.readConsumerJsonList("vaccineConsumer/consumers.json")
 
     freezerConsumersData.forEach { freezer ->
         val vacConsumer = VaccineConsumer(TemperatureConsumerInfo(freezer.id, freezer.hospital))
